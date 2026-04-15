@@ -1,4 +1,6 @@
-psycopg2-binary==2.9.11
-pandas
-ipykernel
+psycopg2-binary
 bcrypt
+sqlalchemy
+streamlit
+pandas
+plotly
