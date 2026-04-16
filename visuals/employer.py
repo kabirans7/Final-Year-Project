@@ -92,10 +92,8 @@ def show():
 
         nav_placeholder = st.empty()
 
-        tab1, tab2 = st.tabs(["Roles", "Skills"])
-
         with nav_placeholder.container():
-            nav_col, col1, spacer = st.columns([0.5, 1, 2])
+            nav_col, col1, col2, spacer = st.columns([0.5, 1, 1, 1])
             with nav_col:
                 st.markdown("<br>", unsafe_allow_html=True)
                 if st.button("< Back", key="employers_back"):
@@ -106,33 +104,31 @@ def show():
                 selected_year = st.selectbox(
                     "Year", year_options, index=0, key="company_detail_year"
                 )
+            with col2:
+                selected_view = st.selectbox("View", ["Roles", "Skills"], key="company_detail_view")
 
         finyear = parse_year(selected_year)
 
-        # --- Tab 1: Roles ---
-        with tab1:
-            roles_df = get_roles_by_company(company, finyear=finyear)
+        st.markdown(f"### {company}")
+        st.markdown("---")
 
+        if selected_view == "Roles":
+            roles_df = get_roles_by_company(company, finyear=finyear)
             if roles_df.empty:
                 st.warning(f"No role data available for {company}.")
             else:
                 roles_df = roles_df.sort_values("demand_count", ascending=True)
-
                 fig_roles = px.bar(
                     roles_df,
                     x="demand_count",
                     y="job_title",
                     orientation="h",
-                    labels={
-                        "job_title": "Job Role",
-                        "demand_count": "Number of Job Postings",
-                    },
+                    labels={"job_title": "Job Role", "demand_count": "Number of Job Postings"},
                     title=f"Roles Offered by {company}",
                     color="demand_count",
                     color_continuous_scale="Blues",
                     range_color=[0, roles_df["demand_count"].max()],
                 )
-
                 fig_roles.update_layout(
                     title_x=0.5,
                     xaxis_title="Number of Job Postings",
@@ -142,33 +138,25 @@ def show():
                     height=500,
                     margin=dict(l=20, r=20, t=60, b=60),
                 )
-
                 st.plotly_chart(fig_roles, use_container_width=True, config=plotly_config)
 
-        # --- Tab 2: Skills ---
-        with tab2:
+        elif selected_view == "Skills":
             skills_df = get_skills_by_company(company, finyear=finyear)
-
             if skills_df.empty:
                 st.warning(f"No skill data available for {company}.")
             else:
                 skills_df = skills_df.sort_values("demand_count", ascending=True)
-
                 fig_skills = px.bar(
                     skills_df,
                     x="demand_count",
                     y="skill_name",
                     orientation="h",
-                    labels={
-                        "skill_name": "Skill Name",
-                        "demand_count": "Number of Job Postings",
-                    },
+                    labels={"skill_name": "Skill Name", "demand_count": "Number of Job Postings"},
                     title=f"Required Skills Needed by {company}",
                     color="demand_count",
                     color_continuous_scale="Blues",
                     range_color=[0, skills_df["demand_count"].max()],
                 )
-
                 fig_skills.update_layout(
                     title_x=0.5,
                     xaxis_title="Number of Job Postings",
@@ -178,5 +166,4 @@ def show():
                     height=500,
                     margin=dict(l=20, r=20, t=60, b=60),
                 )
-
                 st.plotly_chart(fig_skills, use_container_width=True, config=plotly_config)
