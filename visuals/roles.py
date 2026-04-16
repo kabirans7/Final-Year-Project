@@ -314,20 +314,20 @@ def show_careers():
     elif st.session_state.careers_page == "job_detail":
         job_title = st.session_state.selected_job_title
 
-        nav_col, col1, col2, spacer = st.columns([0.5, 1, 1, 1])
-
-        with nav_col:
-            st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("< Back", key="job_detail_back"):
-                st.session_state.careers_page = "treemap"
-                st.session_state.selected_job_title = None
-                st.rerun()
-
-        with col1:
-            selected_year = st.selectbox("Year", year_options, index=0, key="job_detail_year")
+        with st.container():
+            nav_col, col1, col2, spacer = st.columns([0.5, 1, 1, 1])
+            with nav_col:
+                st.markdown("<br>", unsafe_allow_html=True)
+                if st.button("< Back", key="job_detail_back"):
+                    st.session_state.careers_page = "treemap"
+                    st.session_state.selected_job_title = None
+                    st.rerun()
+            with col1:
+                selected_year = st.selectbox("Year", year_options, index=0, key="job_detail_year")
 
         finyear = parse_year(selected_year)
 
+        st.markdown("<div style='margin-top: 0.5rem;'></div>", unsafe_allow_html=True)
         st.markdown(f"### {job_title}")
 
         tab1, tab2, tab3 = st.tabs(["💰 Salary", "🗺️ Geographic", "📋 Experience"])
