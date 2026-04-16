@@ -108,10 +108,13 @@ with tab1:
         show_skills()
 
 with tab2:
-     with st.container(border=True):
+     col1, col2 = st.columns(2) 
+    with col1:
+        with st.container(border=True):
         show_careers()
-     with st.container(border=True):
-        show_roles()
+     with col2:
+         with st.container(border=True):
+             show_roles()
 
 with tab3:
     with st.container(border=True):
