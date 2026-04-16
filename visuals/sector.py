@@ -70,6 +70,10 @@ def show():
             yaxis=dict(automargin=True, tickfont=dict(size=11)),
         )
 
+        fig.update_traces(
+            hovertemplate="<b>%{y}</b><br>Postings: %{x}<br><i>🔍 Click to explore deeper insights</i><extra></extra>",
+        )
+
         event = st.plotly_chart(
             fig,
             on_select="rerun",
