@@ -67,6 +67,7 @@ def show():
 
         fig.update_traces(
             marker=dict(line=dict(width=0)),
+            hovertemplate="<b>%{x}</b><br>Postings: %{y}<br><i>🔍 Click to explore deeper insights</i><extra></extra>",
         )
 
         event = st.plotly_chart(
@@ -169,6 +170,7 @@ def show():
 
         fig.update_traces(
             marker=dict(line=dict(width=0)),
+            hovertemplate="<b>%{x}</b><br>Postings: %{y}<br><i>🔍 Click to explore deeper insights</i><extra></extra>",
         )
 
         event = st.plotly_chart(
