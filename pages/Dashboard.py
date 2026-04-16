@@ -28,6 +28,11 @@ st.markdown("""
         div[data-testid="stTabs"] {
             margin-top: -3.5rem !important;
         }
+        button[data-baseweb="tab"] {
+            font-size: 1.1rem !important;
+            font-weight: 500 !important;
+            padding: 8px 20px !important;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -129,10 +134,8 @@ with tab4:
         show_sectors()
 
 with tab5:
-    col1, col2 = st.columns(2)
-    with col1:
-        with st.container(border=True):
-            show_monthly()
-    with col2: 
-        with st.container(border=True):
-            show_demand()
+    with st.container(border=True):
+        show_monthly()
+        
+    with st.container(border=True):
+        show_demand()
