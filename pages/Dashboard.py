@@ -26,7 +26,7 @@ st.markdown("""
             padding-right: 2rem !important;
         }
         div[data-testid="stTabs"] {
-            margin-top: -2rem !important;
+            margin-top: -3.5rem !important;
         }
     </style>
 """, unsafe_allow_html=True)
