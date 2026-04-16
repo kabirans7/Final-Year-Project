@@ -32,22 +32,49 @@ st.markdown("""
 # ---------------------------------------------------------------
 logo_b64 = __import__('base64').b64encode(open('images/GradScope_Image.png', 'rb').read()).decode()
 
-col1, spacer, nav1, nav2 = st.columns([0.05, 0.7, 0.1, 0.1])
-with col1:
-     st.markdown(f"""
-        <img src="data:image/png;base64,{logo_b64}" 
-             style="width: 60px; height: 60px; object-fit: contain; border-radius: 10px; margin-top: -10px; margin-left: -20px;">
-    """, unsafe_allow_html=True)
-# with col2:
-#     st.markdown("<h4 style='margin: 0; padding-top: 10px; font-weight: 600;'>GradScope</h4>", unsafe_allow_html=True)
-with nav1:
-    st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("Home", use_container_width=True):
-        st.switch_page("Home.py")
-with nav2:
-    st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("Dashboard", use_container_width=True):
-        st.switch_page("pages/Dashboard.py")
+st.markdown(f"""
+    <style>
+        .nav-bar {{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px 0px 6px 0px;
+            margin-bottom: 0px;
+        }}
+        .nav-logo img {{
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            border-radius: 8px;
+        }}
+        .nav-buttons {{
+            display: flex;
+            gap: 10px;
+        }}
+        .nav-buttons a {{
+            text-decoration: none;
+            color: white;
+            background-color: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            padding: 5px 18px;
+            font-size: 14px;
+            cursor: pointer;
+        }}
+        .nav-buttons a:hover {{
+            background-color: rgba(255,255,255,0.1);
+        }}
+    </style>
+    <div class="nav-bar">
+        <div class="nav-logo">
+            <img src="data:image/png;base64,{logo_b64}">
+        </div>
+        <div class="nav-buttons">
+            <a href="/Home" target="_self">Home</a>
+            <a href="/Dashboard" target="_self">Dashboard</a>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
 
 # ---------------------------------------------------------------
 # Global card styling
