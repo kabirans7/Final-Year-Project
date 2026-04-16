@@ -89,30 +89,25 @@ def show():
     elif st.session_state.sectors_page == "detail":
         sector = st.session_state.selected_sector
 
-        nav_col, col1, spacer = st.columns([0.5, 1, 2])
-
+        nav_col, col1, col2, spacer = st.columns([0.5, 1, 1, 1])
         with nav_col:
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("< Back", key="sectors_back"):
                 st.session_state.sectors_page = "overview"
                 st.session_state.selected_sector = None
                 st.rerun()
-
         with col1:
-            selected_year = st.selectbox(
-                "Year", year_options, index=0, key="sector_detail_year"
-            )
+            selected_year = st.selectbox("Year", year_options, index=0, key="sector_detail_year")
+        with col2:
+            selected_view = st.selectbox("View", ["Roles", "Skills", "Salary"], key="sector_detail_view")
 
         finyear = parse_year(selected_year)
 
         st.markdown(f"### {sector}")
+        st.markdown("---")
 
-        tab1, tab2, tab3 = st.tabs(["Roles", "Skills", "Salary"])
-
-        # --- Tab 1: Roles within sector ---
-        with tab1:
+        if selected_view == "Roles":
             roles_df = get_roles_within_sector(sector, finyear=finyear)
-
             if not roles_df.empty:
                 roles_df = roles_df.sort_values("demand_count", ascending=True)
                 fig_roles = px.bar(
@@ -120,13 +115,11 @@ def show():
                     x="demand_count",
                     y="job_title",
                     orientation="h",
-                    labels={
-                        "job_title": "Job Role",
-                        "demand_count": "Number of Job Postings",
-                    },
+                    labels={"job_title": "Job Role", "demand_count": "Number of Job Postings"},
                     title=f"Roles Within {sector}",
                     color="demand_count",
                     color_continuous_scale="Blues",
+                    range_color=[0, roles_df["demand_count"].max()],
                 )
                 fig_roles.update_layout(
                     title_x=0.5,
@@ -141,10 +134,8 @@ def show():
             else:
                 st.info(f"No role data available for {sector}.")
 
-        # --- Tab 2: Skills within sector ---
-        with tab2:
+        elif selected_view == "Skills":
             skills_df = get_skills_within_sector(sector, finyear=finyear)
-
             if not skills_df.empty:
                 skills_df = skills_df.sort_values("frequency", ascending=True)
                 fig_skills = px.bar(
@@ -152,13 +143,11 @@ def show():
                     x="frequency",
                     y="skill_name",
                     orientation="h",
-                    labels={
-                        "skill_name": "Skill",
-                        "frequency": "Frequency",
-                    },
+                    labels={"skill_name": "Skill", "frequency": "Frequency"},
                     title=f"Skills Required Within {sector}",
                     color="frequency",
                     color_continuous_scale="Oranges",
+                    range_color=[0, skills_df["frequency"].max()],
                 )
                 fig_skills.update_layout(
                     title_x=0.5,
@@ -173,10 +162,8 @@ def show():
             else:
                 st.info(f"No skill data available for {sector}.")
 
-        # --- Tab 3: Salary distribution ---
-        with tab3:
+        elif selected_view == "Salary":
             salary_df = get_salary_within_sector(sector, finyear=finyear)
-
             if not salary_df.empty:
                 fig_salary = go.Figure()
                 fig_salary.add_trace(go.Box(
@@ -203,11 +190,9 @@ def show():
                         "<extra></extra>"
                     ),
                 ))
-
                 x_min = salary_df["salary_min"].min()
                 x_max = salary_df["salary_max"].max()
                 x_pad = (x_max - x_min) * 0.30
-
                 fig_salary.update_layout(
                     title=dict(text=f"Salary Distribution for {sector}", x=0.5),
                     xaxis_title="Salary (£)",
