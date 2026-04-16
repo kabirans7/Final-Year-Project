@@ -314,28 +314,27 @@ def show_careers():
     elif st.session_state.careers_page == "job_detail":
         job_title = st.session_state.selected_job_title
 
-        nav_placeholder = st.empty()
-
-        with nav_placeholder.container():
-            nav_col, col1, col2, spacer = st.columns([0.5, 1, 1, 1])
-            with nav_col:
-                st.markdown("<br>", unsafe_allow_html=True)
-                if st.button("< Back", key="job_detail_back"):
-                    st.session_state.careers_page = "treemap"
-                    st.session_state.selected_job_title = None
-                    st.rerun()
-            with col1:
-                selected_year = st.selectbox("Year", year_options, index=0, key="job_detail_year")
+        nav_col, col1, col2, col3, spacer = st.columns([0.5, 1, 1, 1, 0.5])
+        with nav_col:
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("< Back", key="job_detail_back"):
+                st.session_state.careers_page = "treemap"
+                st.session_state.selected_job_title = None
+                st.rerun()
+        with col1:
+            selected_year = st.selectbox("Year", year_options, index=0, key="job_detail_year")
+        with col2:
+            selected_view = st.selectbox("View", ["💰 Salary", "🗺️ Geographic", "📋 Experience"], key="job_detail_view")
 
         finyear = parse_year(selected_year)
 
-        tab1, tab2, tab3 = st.tabs(["💰 Salary", "🗺️ Geographic", "📋 Experience"])
+        st.markdown(f"### {job_title}")
+        st.markdown("---")
 
-        with tab1:
-            st.markdown(f"### {job_title}")
+        if selected_view == "💰 Salary":
             show_salary(job_title, finyear=finyear)
 
-        with tab2:
+        elif selected_view == "🗺️ Geographic":
             nation_cities = {
                 "England":  ["London", "Manchester", "Birmingham", "Leeds", "Bristol", "Newcastle", "Sheffield", "Liverpool", "Nottingham"],
                 "Scotland": ["Edinburgh", "Glasgow"],
@@ -351,13 +350,11 @@ def show_careers():
                 city_options = ["All"] + nation_cities.get(selected_nation, [])
             with geo_col2:
                 selected_city = st.selectbox("City", city_options, index=0, key="job_detail_city")
-
             nation = None if selected_nation == "All" else selected_nation
             city = None if selected_city == "All" else selected_city
-
             col_l, col_m, col_r = st.columns([0.5, 2, 0.5])
             with col_m:
                 show_geography(job_title, finyear=finyear, nation=nation, city=city)
 
-        with tab3:
+        elif selected_view == "📋 Experience":
             show_experience(job_title, finyear=finyear)
