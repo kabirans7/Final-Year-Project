@@ -29,9 +29,9 @@ st.markdown("""
             margin-top: -3.5rem !important;
         }
         button[data-baseweb="tab"] {
-            font-size: 1.1rem !important;
+            font-size: 1.4rem !important;
             font-weight: 500 !important;
-            padding: 8px 20px !important;
+            padding: 8px 24px !important;
         }
     </style>
 """, unsafe_allow_html=True)
