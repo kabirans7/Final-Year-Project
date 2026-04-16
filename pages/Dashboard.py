@@ -18,7 +18,7 @@ st.markdown("""
         [data-testid="stSidebar"] { display: none; }
         [data-testid="collapsedControl"] { display: none; }
         .block-container {
-            padding-top: 2.0rem !important;
+            padding-top: 0.5rem !important;
             margin-top: 0rem !important;
             max-width: 100% !important;
             padding-left: 2rem !important;
@@ -32,11 +32,11 @@ st.markdown("""
 # ---------------------------------------------------------------
 logo_b64 = __import__('base64').b64encode(open('images/GradScope_Image.png', 'rb').read()).decode()
 
-col1, spacer, nav1, nav2 = st.columns([0.15, 0.3, 0.15, 0.15]) #col2 with 0.25
+col1, spacer, nav1, nav2 = st.columns([0.05, 0.7, 0.1, 0.1])
 with col1:
      st.markdown(f"""
         <img src="data:image/png;base64,{logo_b64}" 
-             style="width: 120px; height: 120px; object-fit: contain; border-radius: 10px; margin-top: -30px; margin-left: -20px;">
+             style="width: 60px; height: 60px; object-fit: contain; border-radius: 10px; margin-top: -10px; margin-left: -20px;">
     """, unsafe_allow_html=True)
 # with col2:
 #     st.markdown("<h4 style='margin: 0; padding-top: 10px; font-weight: 600;'>GradScope</h4>", unsafe_allow_html=True)
