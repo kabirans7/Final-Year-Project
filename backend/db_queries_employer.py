@@ -1,30 +1,16 @@
 import pandas as pd
-import psycopg2
 import streamlit as st
-# from etl.config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT #Grab Analytics DB
+from sqlalchemy import text
+from backend.db import get_engine
 
 
-#Establish DB Connection
-def get_connection():
-    pg = st.secrets["postgres"]
-    return psycopg2.connect(
-        dbname=pg["database"],
-        user=pg["user"],
-        password=pg["password"],
-        host=pg["host"],
-        port=pg["port"],
-        sslmode="require"
-    )
-    # return psycopg2.connect(
-    #     dbname=DB_NAME,
-    #     user=DB_USER,
-    #     password=DB_PASSWORD,
-    #     host=DB_HOST,
-    #     port=DB_PORT
-    # )
+def _query(sql: str, params: dict) -> pd.DataFrame:
+    engine = get_engine()
+    with engine.connect() as conn:
+        return pd.read_sql(text(sql), conn, params=params)
 
 
-# Use Case 5 - Most Active Employers
+@st.cache_data(ttl=600)
 def get_active_employers(finyear: int | None = None):
     sql = """
         SELECT
@@ -33,16 +19,15 @@ def get_active_employers(finyear: int | None = None):
         FROM "FACT_Job_Posting" jp
         JOIN "DIM_Company" dc ON jp.company_id = dc.company_id
         JOIN "DIM_Date_Posted" d ON jp.date_posted = d.date
-        WHERE (%s IS NULL OR d.finyear = %s)
+        WHERE (:finyear IS NULL OR d.finyear = :finyear)
         GROUP BY dc.company_name
         ORDER BY demand_count DESC
         LIMIT 10
     """
-    with get_connection() as conn:
-        return pd.read_sql(sql, conn, params=(finyear, finyear))
+    return _query(sql, {"finyear": finyear})
 
 
-# Use Case 5 Drill-Down - Roles offered by a specific company
+@st.cache_data(ttl=600)
 def get_roles_by_company(company_name: str, finyear: int | None = None):
     sql = """
         SELECT
@@ -52,16 +37,15 @@ def get_roles_by_company(company_name: str, finyear: int | None = None):
         JOIN "DIM_Company" dc ON jp.company_id = dc.company_id
         JOIN "DIM_Job_Title" jt ON jp.job_title_id = jt.job_title_id
         JOIN "DIM_Date_Posted" d ON jp.date_posted = d.date
-        WHERE dc.company_name = %s
-          AND (%s IS NULL OR d.finyear = %s)
+        WHERE dc.company_name = :company_name
+          AND (:finyear IS NULL OR d.finyear = :finyear)
         GROUP BY jt.job_title
         ORDER BY demand_count DESC
     """
-    with get_connection() as conn:
-        return pd.read_sql(sql, conn, params=(company_name, finyear, finyear))
+    return _query(sql, {"company_name": company_name, "finyear": finyear})
 
 
-# Use Case 5 Drill-Down - Skills required by a specific company
+@st.cache_data(ttl=600)
 def get_skills_by_company(company_name: str, finyear: int | None = None):
     sql = """
         SELECT
@@ -72,11 +56,10 @@ def get_skills_by_company(company_name: str, finyear: int | None = None):
         JOIN "FACT_Job_Skill" fs ON jp.job_posting_id = fs.job_posting_id
         JOIN "DIM_Skill" s ON fs.skill_id = s.skill_id
         JOIN "DIM_Date_Posted" d ON jp.date_posted = d.date
-        WHERE dc.company_name = %s
-          AND (%s IS NULL OR d.finyear = %s)
+        WHERE dc.company_name = :company_name
+          AND (:finyear IS NULL OR d.finyear = :finyear)
         GROUP BY s.skill_name
         ORDER BY demand_count DESC
         LIMIT 10
     """
-    with get_connection() as conn:
-        return pd.read_sql(sql, conn, params=(company_name, finyear, finyear))
+    return _query(sql, {"company_name": company_name, "finyear": finyear})
