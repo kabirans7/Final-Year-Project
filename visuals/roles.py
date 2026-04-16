@@ -324,13 +324,13 @@ def show_careers():
                     st.rerun()
             with col1:
                 selected_year = st.selectbox("Year", year_options, index=0, key="job_detail_year")
-            st.markdown(f"### {job_title}")
 
         finyear = parse_year(selected_year)
 
         tab1, tab2, tab3 = st.tabs(["💰 Salary", "🗺️ Geographic", "📋 Experience"])
 
         with tab1:
+            st.markdown(f"### {job_title}")
             show_salary(job_title, finyear=finyear)
 
         with tab2:
