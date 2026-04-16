@@ -11,14 +11,15 @@ from visuals.sector import show as show_sectors
 st.set_page_config(layout="wide")
 
 # ---------------------------------------------------------------
-# Layout + hide sidebar
+# Layout + hide sidebar + hide Streamlit header
 # ---------------------------------------------------------------
 st.markdown("""
     <style>
         [data-testid="stSidebar"] { display: none; }
         [data-testid="collapsedControl"] { display: none; }
+        header[data-testid="stHeader"] { display: none; }
         .block-container {
-            padding-top: 0.5rem !important;
+            padding-top: 1rem !important;
             margin-top: 0rem !important;
             max-width: 100% !important;
             padding-left: 2rem !important;
@@ -32,28 +33,11 @@ st.markdown("""
 # ---------------------------------------------------------------
 logo_b64 = __import__('base64').b64encode(open('images/GradScope_Image.png', 'rb').read()).decode()
 
-st.markdown("""
-    <style>
-        /* shrink button height */
-        div[data-testid="stButton"] button {
-            padding-top: 2px !important;
-            padding-bottom: 2px !important;
-            height: 36px !important;
-        }
-        /* remove gap above columns */
-        div[data-testid="stHorizontalBlock"] {
-            align-items: center !important;
-            gap: 0rem !important;
-            margin-bottom: 0rem !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
 col1, spacer, nav1, nav2 = st.columns([0.05, 0.7, 0.1, 0.1])
 with col1:
     st.markdown(f"""
         <img src="data:image/png;base64,{logo_b64}"
-             style="width: 44px; height: 44px; object-fit: contain; border-radius: 8px;">
+             style="width: 48px; height: 48px; object-fit: contain; border-radius: 8px;">
     """, unsafe_allow_html=True)
 with nav1:
     if st.button("Home", use_container_width=True):
