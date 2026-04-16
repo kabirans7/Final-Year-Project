@@ -32,49 +32,35 @@ st.markdown("""
 # ---------------------------------------------------------------
 logo_b64 = __import__('base64').b64encode(open('images/GradScope_Image.png', 'rb').read()).decode()
 
-st.markdown(f"""
+st.markdown("""
     <style>
-        .nav-bar {{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0px 0px 6px 0px;
-            margin-bottom: 0px;
-        }}
-        .nav-logo img {{
-            width: 44px;
-            height: 44px;
-            object-fit: contain;
-            border-radius: 8px;
-        }}
-        .nav-buttons {{
-            display: flex;
-            gap: 10px;
-        }}
-        .nav-buttons a {{
-            text-decoration: none;
-            color: white;
-            background-color: transparent;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 6px;
-            padding: 5px 18px;
-            font-size: 14px;
-            cursor: pointer;
-        }}
-        .nav-buttons a:hover {{
-            background-color: rgba(255,255,255,0.1);
-        }}
+        /* shrink button height */
+        div[data-testid="stButton"] button {
+            padding-top: 2px !important;
+            padding-bottom: 2px !important;
+            height: 36px !important;
+        }
+        /* remove gap above columns */
+        div[data-testid="stHorizontalBlock"] {
+            align-items: center !important;
+            gap: 0rem !important;
+            margin-bottom: 0rem !important;
+        }
     </style>
-    <div class="nav-bar">
-        <div class="nav-logo">
-            <img src="data:image/png;base64,{logo_b64}">
-        </div>
-        <div class="nav-buttons">
-            <a href="/Home" target="_self">Home</a>
-            <a href="/Dashboard" target="_self">Dashboard</a>
-        </div>
-    </div>
 """, unsafe_allow_html=True)
+
+col1, spacer, nav1, nav2 = st.columns([0.05, 0.7, 0.1, 0.1])
+with col1:
+    st.markdown(f"""
+        <img src="data:image/png;base64,{logo_b64}"
+             style="width: 44px; height: 44px; object-fit: contain; border-radius: 8px;">
+    """, unsafe_allow_html=True)
+with nav1:
+    if st.button("Home", use_container_width=True):
+        st.switch_page("Home.py")
+with nav2:
+    if st.button("Dashboard", use_container_width=True):
+        st.switch_page("pages/Dashboard.py")
 
 # ---------------------------------------------------------------
 # Global card styling
