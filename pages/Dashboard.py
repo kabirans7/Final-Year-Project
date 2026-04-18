@@ -56,6 +56,32 @@ with nav2:
         st.switch_page("pages/Dashboard.py")
 
 # ---------------------------------------------------------------
+# Global Filters UI (no functionality yet)
+# ---------------------------------------------------------------
+st.markdown("""
+    <style>
+        .global-filters-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #a78bfa;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+with st.container(border=True):
+    st.markdown('<p class="global-filters-title">▼&nbsp;&nbsp;Global Filters</p>', unsafe_allow_html=True)
+    f1, f2, f3, f4 = st.columns(4)
+    with f1:
+        st.selectbox("Time Range", ["All Time", "2019", "2020", "2021", "2022", "2023"], key="gf_time")
+    with f2:
+        st.selectbox("Sector", ["All Sectors"], key="gf_sector")
+    with f3:
+        st.selectbox("Location", ["All Regions"], key="gf_location")
+    with f4:
+        st.selectbox("Role Type", ["All Roles"], key="gf_role")
+
+# ---------------------------------------------------------------
 # Global card styling
 # ---------------------------------------------------------------
 st.markdown("""
@@ -135,11 +161,8 @@ with tab4:
         show_sectors()
 
 with tab5:
-    col1, col2 = st.columns(2)
-    with col1:
-        with st.container(border=True):
-            show_monthly()
-
-    with col2: 
-        with st.container(border=True):
-            show_demand()
+    with st.container(border=True):
+        show_monthly()
+        
+    with st.container(border=True):
+        show_demand()
