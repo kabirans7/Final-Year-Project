@@ -187,11 +187,11 @@ def show_careers():
         return None if selected == "All Time" else int(selected)
 
     # ---------------------------------------------------------------
-    # Page 1 — Styled dataframe with progress column
+    # Page 1 — Bar chart: Job roles grouped by industry
     # ---------------------------------------------------------------
     if st.session_state.careers_page == "treemap":
 
-        col1, col2, spacer = st.columns([1, 1, 1])
+        col1, col2 = st.columns([1, 1])
         with col1:
             selected_year = st.selectbox("Year", year_options, index=0, key="careers_year")
 
@@ -202,53 +202,50 @@ def show_careers():
             st.warning("No career data available.")
             return
 
+        # Industry filter
         industries = ["All"] + sorted(df["industry_name"].dropna().unique().tolist())
         with col2:
             selected_industry = st.selectbox("Industry", industries, index=0, key="careers_industry")
 
-        roles = ["All"] + sorted(df["job_title"].dropna().unique().tolist())
-        with spacer:
-            selected_role_filter = st.selectbox("Job Role", roles, index=0, key="careers_role_filter")
-
         if selected_industry != "All":
             df = df[df["industry_name"] == selected_industry]
 
-        if selected_role_filter != "All":
-            df = df[df["job_title"] == selected_role_filter]
+        # Top 20 roles by demand for readability
+        df = df.sort_values("demand_count", ascending=True).tail(20)
 
-        df_display = df[["industry_name", "job_title", "demand_count"]].rename(columns={
-            "industry_name": "Industry",
-            "job_title": "Job Role",
-            "demand_count": "Number of Postings",
-        }).sort_values("Number of Postings", ascending=False).reset_index(drop=True)
-
-        st.markdown("##### Career Options Related to Industry")
-        st.caption("🖱️ Click any row to explore salary, location and experience insights for that role.")
-
-        event = st.dataframe(
-            df_display,
-            use_container_width=True,
-            hide_index=True,
-            on_select="rerun",
-            selection_mode="single-row",
-            height=500,
-            column_config={
-                "Industry": st.column_config.TextColumn("🏭 Industry", width="medium"),
-                "Job Role": st.column_config.TextColumn("👔 Job Role", width="medium"),
-                "Number of Postings": st.column_config.ProgressColumn(
-                    "📊 Demand",
-                    min_value=0,
-                    max_value=int(df_display["Number of Postings"].max()),
-                    format="%d",
-                    width="medium",
-                ),
-            }
+        fig = px.bar(
+            df,
+            x="demand_count",
+            y="job_title",
+            color="industry_name",
+            orientation="h",
+            labels={
+                "job_title": "Job Role",
+                "demand_count": "Number of Postings",
+                "industry_name": "Industry",
+            },
+            title="Career Options Related to Industry",
         )
 
-        if event and event.selection and event.selection.get("rows"):
-            selected_row = event.selection["rows"][0]
-            st.session_state.selected_job_title = df_display.iloc[selected_row]["Job Role"]
-            st.session_state.selected_industry = df_display.iloc[selected_row]["Industry"]
+        fig.update_layout(
+            title_x=0.5,
+            xaxis_title="Number of Postings",
+            yaxis_title="Job Role",
+            height=600,
+            margin=dict(l=20, r=20, t=60, b=40),
+            legend=dict(orientation="v", x=1.02, y=1),
+        )
+
+        event = st.plotly_chart(
+            fig,
+            on_select="rerun",
+            key="careers_bar",
+            use_container_width=True,
+            config=plotly_config,
+        )
+
+        if event and event.selection and event.selection.get("points"):
+            st.session_state.selected_job_title = event.selection["points"][0]["y"]
             st.session_state.careers_page = "job_detail"
             st.rerun()
 
@@ -296,18 +293,7 @@ def show_careers():
             height=600,
         )
 
-        event = st.plotly_chart(
-            fig,
-            on_select="rerun",
-            key="industry_roles_chart",
-            use_container_width=True,
-            config=plotly_config,
-        )
-
-        if event and event.selection and event.selection.get("points"):
-            st.session_state.selected_job_title = event.selection["points"][0]["x"]
-            st.session_state.careers_page = "job_detail"
-            st.rerun()
+        st.plotly_chart(fig, use_container_width=True, config=plotly_config)
 
     # ---------------------------------------------------------------
     # Page 3 — Salary, Geography & Experience tabs for selected job role
@@ -315,27 +301,30 @@ def show_careers():
     elif st.session_state.careers_page == "job_detail":
         job_title = st.session_state.selected_job_title
 
-        nav_col, col1, col2, col3, spacer = st.columns([0.5, 1, 1, 1, 0.5])
+        nav_col, col1, col2, spacer = st.columns([0.5, 1, 1, 1])
+
         with nav_col:
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("< Back", key="job_detail_back"):
                 st.session_state.careers_page = "treemap"
                 st.session_state.selected_job_title = None
                 st.rerun()
+
         with col1:
             selected_year = st.selectbox("Year", year_options, index=0, key="job_detail_year")
-        with col2:
-            selected_view = st.selectbox("View", ["💰 Salary", "🗺️ Geographic", "📋 Experience"], key="job_detail_view")
 
         finyear = parse_year(selected_year)
 
         st.markdown(f"### {job_title}")
-        st.markdown("---")
 
-        if selected_view == "💰 Salary":
+        # Three tabs for drill-down insights
+        tab1, tab2, tab3 = st.tabs(["Salary", "Geographic", "Experience"])
+
+        with tab1:
             show_salary(job_title, finyear=finyear)
 
-        elif selected_view == "🗺️ Geographic":
+        with tab2:
+            # Location filters only shown in geographic tab
             nation_cities = {
                 "England":  ["London", "Manchester", "Birmingham", "Leeds", "Bristol", "Newcastle", "Sheffield", "Liverpool", "Nottingham"],
                 "Scotland": ["Edinburgh", "Glasgow"],
@@ -351,11 +340,210 @@ def show_careers():
                 city_options = ["All"] + nation_cities.get(selected_nation, [])
             with geo_col2:
                 selected_city = st.selectbox("City", city_options, index=0, key="job_detail_city")
+
             nation = None if selected_nation == "All" else selected_nation
             city = None if selected_city == "All" else selected_city
+
             col_l, col_m, col_r = st.columns([0.5, 2, 0.5])
             with col_m:
                 show_geography(job_title, finyear=finyear, nation=nation, city=city)
 
-        elif selected_view == "📋 Experience":
+        with tab3:
             show_experience(job_title, finyear=finyear)
+
+
+
+
+# # ---------------------------------------------------------------
+# # Use Case 4 — Career Options by Industry
+# # ---------------------------------------------------------------
+# def show_careers():
+#     plotly_config = {"displayModeBar": False}
+
+#     for key, default in [
+#         ("careers_page", "treemap"),
+#         ("selected_industry", None),
+#         ("selected_job_title", None),
+#     ]:
+#         if key not in st.session_state:
+#             st.session_state[key] = default
+
+#     fin_years = [2019, 2020, 2021, 2022, 2023]
+#     year_options = ["All Time"] + [str(y) for y in fin_years]
+
+#     def parse_year(selected: str) -> int | None:
+#         return None if selected == "All Time" else int(selected)
+
+#     # ---------------------------------------------------------------
+#     # Page 1 — Styled dataframe with progress column
+#     # ---------------------------------------------------------------
+#     if st.session_state.careers_page == "treemap":
+
+#         col1, col2, spacer = st.columns([1, 1, 1])
+#         with col1:
+#             selected_year = st.selectbox("Year", year_options, index=0, key="careers_year")
+
+#         finyear = parse_year(selected_year)
+#         df = get_career_options(finyear=finyear)
+
+#         if df.empty:
+#             st.warning("No career data available.")
+#             return
+
+#         industries = ["All"] + sorted(df["industry_name"].dropna().unique().tolist())
+#         with col2:
+#             selected_industry = st.selectbox("Industry", industries, index=0, key="careers_industry")
+
+#         roles = ["All"] + sorted(df["job_title"].dropna().unique().tolist())
+#         with spacer:
+#             selected_role_filter = st.selectbox("Job Role", roles, index=0, key="careers_role_filter")
+
+#         if selected_industry != "All":
+#             df = df[df["industry_name"] == selected_industry]
+
+#         if selected_role_filter != "All":
+#             df = df[df["job_title"] == selected_role_filter]
+
+#         df_display = df[["industry_name", "job_title", "demand_count"]].rename(columns={
+#             "industry_name": "Industry",
+#             "job_title": "Job Role",
+#             "demand_count": "Number of Postings",
+#         }).sort_values("Number of Postings", ascending=False).reset_index(drop=True)
+
+#         st.markdown("##### Career Options Related to Industry")
+#         st.caption("🖱️ Click any row to explore salary, location and experience insights for that role.")
+
+#         event = st.dataframe(
+#             df_display,
+#             use_container_width=True,
+#             hide_index=True,
+#             on_select="rerun",
+#             selection_mode="single-row",
+#             height=500,
+#             column_config={
+#                 "Industry": st.column_config.TextColumn("🏭 Industry", width="medium"),
+#                 "Job Role": st.column_config.TextColumn("👔 Job Role", width="medium"),
+#                 "Number of Postings": st.column_config.ProgressColumn(
+#                     "📊 Demand",
+#                     min_value=0,
+#                     max_value=int(df_display["Number of Postings"].max()),
+#                     format="%d",
+#                     width="medium",
+#                 ),
+#             }
+#         )
+
+#         if event and event.selection and event.selection.get("rows"):
+#             selected_row = event.selection["rows"][0]
+#             st.session_state.selected_job_title = df_display.iloc[selected_row]["Job Role"]
+#             st.session_state.selected_industry = df_display.iloc[selected_row]["Industry"]
+#             st.session_state.careers_page = "job_detail"
+#             st.rerun()
+
+#     # ---------------------------------------------------------------
+#     # Page 2 — Bar chart: Job roles within selected industry
+#     # ---------------------------------------------------------------
+#     elif st.session_state.careers_page == "industry_roles":
+#         industry = st.session_state.selected_industry
+
+#         nav_col, col1, spacer = st.columns([0.5, 1, 2])
+
+#         with nav_col:
+#             st.markdown("<br>", unsafe_allow_html=True)
+#             if st.button("< Back", key="industry_back"):
+#                 st.session_state.careers_page = "treemap"
+#                 st.session_state.selected_industry = None
+#                 st.rerun()
+
+#         with col1:
+#             selected_year = st.selectbox("Year", year_options, index=0, key="industry_year")
+
+#         finyear = parse_year(selected_year)
+#         df = get_roles_by_industry(industry, finyear=finyear)
+
+#         if df.empty:
+#             st.warning(f"No role data available for {industry}.")
+#             return
+
+#         fig = px.bar(
+#             df,
+#             x="job_title",
+#             y="demand_count",
+#             color="job_title",
+#             labels={"job_title": "Job Role", "demand_count": "Number of postings"},
+#             title=f"Job Roles in {industry}",
+#         )
+
+#         fig.update_layout(
+#             showlegend=False,
+#             xaxis_tickangle=-30,
+#             xaxis_title="Job Role",
+#             yaxis_title="Number of<br>postings",
+#             yaxis=dict(rangemode="tozero"),
+#             title_x=0.5,
+#             height=600,
+#         )
+
+#         event = st.plotly_chart(
+#             fig,
+#             on_select="rerun",
+#             key="industry_roles_chart",
+#             use_container_width=True,
+#             config=plotly_config,
+#         )
+
+#         if event and event.selection and event.selection.get("points"):
+#             st.session_state.selected_job_title = event.selection["points"][0]["x"]
+#             st.session_state.careers_page = "job_detail"
+#             st.rerun()
+
+#     # ---------------------------------------------------------------
+#     # Page 3 — Salary, Geography & Experience tabs for selected job role
+#     # ---------------------------------------------------------------
+#     elif st.session_state.careers_page == "job_detail":
+#         job_title = st.session_state.selected_job_title
+
+#         nav_col, col1, col2, col3, spacer = st.columns([0.5, 1, 1, 1, 0.5])
+#         with nav_col:
+#             st.markdown("<br>", unsafe_allow_html=True)
+#             if st.button("< Back", key="job_detail_back"):
+#                 st.session_state.careers_page = "treemap"
+#                 st.session_state.selected_job_title = None
+#                 st.rerun()
+#         with col1:
+#             selected_year = st.selectbox("Year", year_options, index=0, key="job_detail_year")
+#         with col2:
+#             selected_view = st.selectbox("View", ["💰 Salary", "🗺️ Geographic", "📋 Experience"], key="job_detail_view")
+
+#         finyear = parse_year(selected_year)
+
+#         st.markdown(f"### {job_title}")
+#         st.markdown("---")
+
+#         if selected_view == "💰 Salary":
+#             show_salary(job_title, finyear=finyear)
+
+#         elif selected_view == "🗺️ Geographic":
+#             nation_cities = {
+#                 "England":  ["London", "Manchester", "Birmingham", "Leeds", "Bristol", "Newcastle", "Sheffield", "Liverpool", "Nottingham"],
+#                 "Scotland": ["Edinburgh", "Glasgow"],
+#                 "Wales":    ["Cardiff"],
+#             }
+#             geo_col1, geo_col2, geo_spacer = st.columns([1, 1, 2])
+#             with geo_col1:
+#                 nations = ["All", "England", "Scotland", "Wales"]
+#                 selected_nation = st.selectbox("Country", nations, index=0, key="job_detail_nation")
+#             if selected_nation == "All":
+#                 city_options = ["All"] + sorted([c for cities in nation_cities.values() for c in cities])
+#             else:
+#                 city_options = ["All"] + nation_cities.get(selected_nation, [])
+#             with geo_col2:
+#                 selected_city = st.selectbox("City", city_options, index=0, key="job_detail_city")
+#             nation = None if selected_nation == "All" else selected_nation
+#             city = None if selected_city == "All" else selected_city
+#             col_l, col_m, col_r = st.columns([0.5, 2, 0.5])
+#             with col_m:
+#                 show_geography(job_title, finyear=finyear, nation=nation, city=city)
+
+#         elif selected_view == "📋 Experience":
+#             show_experience(job_title, finyear=finyear)
