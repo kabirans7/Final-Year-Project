@@ -26,7 +26,7 @@ st.markdown("""
             padding-right: 2rem !important;
         }
         div[data-testid="stTabs"] {
-            margin-top: -3.5rem !important;
+            margin-top: -1rem !important;
         }
         button[data-baseweb="tab"] p,
         button[data-baseweb="tab"],
