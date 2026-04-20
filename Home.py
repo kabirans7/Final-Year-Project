@@ -215,4 +215,6 @@ st.markdown(f"""
         </div>
     </div>
     </div>
+<h2>Disclaimer</h2>
+<p>This is GDPR Compliant</p>
 """, unsafe_allow_html=True)
