@@ -126,11 +126,11 @@ def show():
     elif st.session_state.roles_page == "trend":
         role = st.session_state.selected_role
 
-        nav_col, col1, spacer = st.columns([0.5, 1, 2])
+        nav_col, col1, spacer = st.columns([0.8, 1, 2])
 
         with nav_col:
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("< Back", key="roles_back"):
+            if st.button("← Back", key="roles_back"):
                 st.session_state.roles_page = "overview"
                 st.session_state.selected_role = None
                 st.rerun()
@@ -273,11 +273,11 @@ def show_careers():
     elif st.session_state.careers_page == "industry_roles":
         industry = st.session_state.selected_industry
 
-        nav_col, col1, spacer = st.columns([0.5, 1, 2])
+        nav_col, col1, spacer = st.columns([0.8, 1, 2])
 
         with nav_col:
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("< Back", key="industry_back"):
+            if st.button("← Back", key="industry_back"):
                 st.session_state.careers_page = "treemap"
                 st.session_state.selected_industry = None
                 st.rerun()
@@ -319,11 +319,11 @@ def show_careers():
     elif st.session_state.careers_page == "job_detail":
         job_title = st.session_state.selected_job_title
 
-        nav_col, col1, col2, spacer = st.columns([0.5, 1, 1, 1])
+        nav_col, col1, col2, spacer = st.columns([0.8, 1, 1, 1])
 
         with nav_col:
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("< Back", key="job_detail_back"):
+            if st.button("← Back", key="job_detail_back"):
                 st.session_state.careers_page = "treemap"
                 st.session_state.selected_job_title = None
                 st.rerun()
