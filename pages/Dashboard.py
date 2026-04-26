@@ -70,6 +70,10 @@ st.markdown("""
         border-radius: 12px;
         padding: 8px;
     }
+    label p {
+        font-size: 1.1rem !important;
+        font-weight: 500 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
