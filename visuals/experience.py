@@ -36,7 +36,6 @@ def show(job_title: str, finyear: int | None = None):
             "experience_level": "Experience Level",
             "demand_count": "Number of Job Postings",
         },
-        title=f"Experience Requirements for {job_title}",
     )
 
     fig.update_traces(
@@ -46,7 +45,7 @@ def show(job_title: str, finyear: int | None = None):
     )
 
     fig.update_layout(
-        title_x=0.5,
+        title=dict(text=f"Experience Requirements for {job_title}", x=0.5, xanchor="center"),
         xaxis_title="Number of Job Postings",
         yaxis_title="Experience Level",
         showlegend=False,
