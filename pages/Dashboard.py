@@ -19,7 +19,7 @@ st.markdown("""
         [data-testid="collapsedControl"] { display: none; }
         header[data-testid="stHeader"] { display: none; }
         .block-container {
-            padding-top: 0.3rem !important;
+            padding-top: 0rem !important;
             margin-top: 0rem !important;
             max-width: 100% !important;
             padding-left: 3rem !important;
