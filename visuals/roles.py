@@ -162,11 +162,11 @@ def show():
         )
 
         fig.update_layout(
+            title=dict(text=f"Demand Trends Over Time For {role}", x=0.5, xanchor="center"),
             xaxis_title="Month",
             yaxis_title="Number of<br>postings",
             yaxis=dict(rangemode="tozero"),
             xaxis=dict(tickangle=-30),
-            title_x=0.5,
         )
 
         st.plotly_chart(fig, use_container_width=True, config=plotly_config)
