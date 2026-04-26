@@ -341,16 +341,17 @@ def show_careers():
         with col1:
             selected_year = st.selectbox("Year", year_options, index=0, key="job_detail_year")
 
+        with col2:
+            selected_view = st.selectbox("View", ["Salary", "Geographic", "Experience"], key="job_detail_view")
+
         finyear = parse_year(selected_year)
 
         st.markdown(f"### {job_title}")
 
-        tab1, tab2, tab3 = st.tabs(["Salary", "Geographic", "Experience"])
-
-        with tab1:
+        if selected_view == "Salary":
             show_salary(job_title, finyear=finyear)
 
-        with tab2:
+        elif selected_view == "Geographic":
             nation_cities = {
                 "England":  ["London", "Manchester", "Birmingham", "Leeds", "Bristol", "Newcastle", "Sheffield", "Liverpool", "Nottingham"],
                 "Scotland": ["Edinburgh", "Glasgow"],
@@ -374,5 +375,5 @@ def show_careers():
             with col_m:
                 show_geography(job_title, finyear=finyear, nation=nation, city=city)
 
-        with tab3:
+        elif selected_view == "Experience":
             show_experience(job_title, finyear=finyear)
