@@ -11,6 +11,10 @@ CB_COLORS = [
     "#4C8BF5",  # blue
     "#F5A623",  # amber
     "#E8789A",  # pink
+    "#2DBDB6",  # teal
+    "#8B5CF6",  # purple
+    "#E05C2D",  # orange-red
+    "#3DAA6D",  # green
     "#6B6B6B",  # dark grey
 ]
 
