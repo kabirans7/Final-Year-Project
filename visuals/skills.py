@@ -86,9 +86,10 @@ def show():
             yaxis_title="Number of<br>postings",
             title_x=0.5,
             title_font=dict(size=22),
-            xaxis=dict(title_font=dict(size=16), tickfont=dict(size=13)),
+            xaxis=dict(title_font=dict(size=16), tickfont=dict(size=13), automargin=True),
             yaxis=dict(title_font=dict(size=16), tickfont=dict(size=13), rangemode="tozero"),
-            height=600,
+            height=500,
+            margin=dict(l=60, r=20, t=60, b=120),
             transition={"duration": 600, "easing": "cubic-in-out"},
         )
 
