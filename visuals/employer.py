@@ -90,7 +90,7 @@ def show():
     elif st.session_state.employers_page == "company_detail":
         company = st.session_state.selected_company
 
-        nav_col, col1, col2, spacer = st.columns([0.5, 1, 1, 1])
+        nav_col, col1, spacer = st.columns([0.8, 1, 2])
         with nav_col:
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("← Back", key="employers_back"):
@@ -101,12 +101,13 @@ def show():
             selected_year = st.selectbox(
                 "Year", year_options, index=0, key="company_detail_year"
             )
-        with col2:
-            selected_view = st.selectbox("View", ["Roles", "Skills"], key="company_detail_view")
 
         finyear = parse_year(selected_year)
 
-        if selected_view == "Roles":
+        st.markdown("<br>", unsafe_allow_html=True)
+        tab1, tab2 = st.tabs(["Roles", "Skills"])
+
+        with tab1:
             roles_df = get_roles_by_company(company, finyear=finyear)
             if roles_df.empty:
                 st.warning(f"No role data available for {company}.")
@@ -124,7 +125,7 @@ def show():
                     range_color=[0, roles_df["demand_count"].max()],
                 )
                 fig_roles.update_layout(
-                    title_x=0.5,
+                    title=dict(text=f"Roles Offered by {company}", x=0.5, xanchor="center"),
                     xaxis_title="Number of Job Postings",
                     yaxis_title="Job Role",
                     coloraxis_showscale=False,
@@ -134,7 +135,7 @@ def show():
                 )
                 st.plotly_chart(fig_roles, use_container_width=True, config=plotly_config)
 
-        elif selected_view == "Skills":
+        with tab2:
             skills_df = get_skills_by_company(company, finyear=finyear)
             if skills_df.empty:
                 st.warning(f"No skill data available for {company}.")
@@ -152,7 +153,7 @@ def show():
                     range_color=[0, skills_df["demand_count"].max()],
                 )
                 fig_skills.update_layout(
-                    title_x=0.5,
+                    title=dict(text=f"Required Skills Needed by {company}", x=0.5, xanchor="center"),
                     xaxis_title="Number of Job Postings",
                     yaxis_title="Skill Name",
                     coloraxis_showscale=False,
