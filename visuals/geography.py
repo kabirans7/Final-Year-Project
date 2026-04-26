@@ -4,7 +4,6 @@ import pandas as pd
 from backend.db_queries_roles import get_geography_by_role
 
 # Comprehensive UK city coordinates
-# Add new cities here as data expands
 CITY_COORDS = {
     "London":       {"lat": 51.5074, "lon": -0.1278},
     "Manchester":   {"lat": 53.4808, "lon": -2.2426},
@@ -37,18 +36,14 @@ def show(job_title: str, finyear: int | None = None, nation: str | None = None, 
         st.info(f"No geographic data available for {job_title}.")
         return
 
-    # Apply nation filter if selected
     if nation and nation != "All":
         df = df[df["country"] == nation]
 
-    # If city filter applied, show city-level data
     if city and city != "All":
-        # Use city coordinates
         df["lat"] = df["country"].map(lambda x: CITY_COORDS.get(city, {}).get("lat"))
         df["lon"] = df["country"].map(lambda x: CITY_COORDS.get(city, {}).get("lon"))
         df["label"] = city
     else:
-        # Aggregate to nation level
         all_nations = pd.DataFrame([
             {"country": "England",  "demand_count": 0},
             {"country": "Scotland", "demand_count": 0},
@@ -61,7 +56,6 @@ def show(job_title: str, finyear: int | None = None, nation: str | None = None, 
         df["lon"] = df["country"].map(lambda x: NATION_COORDS.get(x, {}).get("lon"))
         df["label"] = df["country"]
 
-    # Categorise demand
     max_count = df["demand_count"].max()
     def categorise(val):
         if max_count == 0:
@@ -77,10 +71,10 @@ def show(job_title: str, finyear: int | None = None, nation: str | None = None, 
     df["Demand"] = df["demand_count"].apply(categorise)
 
     color_map = {
-        "High":    "#922B21",
-        "Medium":  "#E8B4B8",
-        "Low":     "#D5D8DC",
-        "No Data": "#EAECEE",
+        "High":    "#1B3A6B",  # dark navy blue
+        "Medium":  "#6AAACD",  # medium blue
+        "Low":     "#B8D4E8",  # pale blue
+        "No Data": "#D5D8DC",  # light grey
     }
 
     fig = px.scatter_geo(
@@ -91,6 +85,7 @@ def show(job_title: str, finyear: int | None = None, nation: str | None = None, 
         color="Demand",
         text="label",
         color_discrete_map=color_map,
+        category_orders={"Demand": ["High", "Medium", "Low", "No Data"]},
         size_max=60,
         title=f"Geographic Distribution of {job_title}",
         hover_data={"demand_count": True, "lat": False, "lon": False},
