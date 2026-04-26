@@ -64,7 +64,7 @@ def show():
             yaxis_title="Industry Sector",
             coloraxis_showscale=False,
             showlegend=False,
-            height=600,
+            height=500,
             margin=dict(l=180, r=20, t=60, b=60),
             yaxis=dict(automargin=True, tickfont=dict(size=11)),
         )
