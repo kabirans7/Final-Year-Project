@@ -218,7 +218,6 @@ def show_careers():
             st.warning("No career data available.")
             return
 
-        st.caption("Click a job role to explore salary, location and experience insights.")
 
         fig = px.treemap(
             df,
