@@ -63,7 +63,7 @@ def show():
             yaxis_title="Company",
             coloraxis_showscale=False,
             showlegend=False,
-            height=600,
+            height=500,
             margin=dict(l=20, r=20, t=60, b=60),
         )
 
