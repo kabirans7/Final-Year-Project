@@ -115,7 +115,7 @@ def show(job_title: str, finyear: int | None = None, nation: str | None = None, 
     )
 
     fig.update_layout(
-        title_x=0.5,
+        title=dict(text=f"Geographic Distribution of {job_title}", x=0.5, xanchor="center"),
         height=600,
         width=700,
         margin=dict(l=0, r=0, t=60, b=0),
