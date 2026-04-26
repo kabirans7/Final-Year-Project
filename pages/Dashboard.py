@@ -34,7 +34,7 @@ st.markdown("""
             font-size: 1.4rem !important;
             font-weight: 600 !important;
         }
-        div[data-testid="stHorizontalBlock"] button[kind="secondary"] {
+        div[data-testid="stHorizontalBlock"]:first-of-type button[kind="secondary"] {
             font-size: 1.4rem !important;
             font-weight: 600 !important;
             padding: 0.75rem 1.5rem !important;
