@@ -333,6 +333,7 @@ def show_careers():
 
         finyear = parse_year(selected_year)
 
+        st.markdown("<br>", unsafe_allow_html=True)
         tab1, tab2, tab3 = st.tabs(["Salary", "Geographic", "Experience"])
 
         with tab1:
