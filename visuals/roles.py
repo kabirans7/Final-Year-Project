@@ -225,22 +225,19 @@ def show_careers():
             values="demand_count",
             color="industry_name",
             color_discrete_sequence=[
-                "#C85A4A",  # coral red (Support)
-                "#7B5EA7",  # purple (Security)
-                "#5B8DB8",  # steel blue (Cloud Computing)
-                "#C8963A",  # gold (Procurement/Web Dev)
-                "#7AAB6D",  # olive green (Quality Assurance)
-                "#4A9B8E",  # teal (Data Science)
-                "#C4784A",  # burnt orange (Project Management)
-                "#D4A847",  # yellow gold (Education)
-                "#5B7FB5",  # medium blue (Business Analysis)
-                "#6BAED6",  # light blue (Networking/DevOps)
-                "#8C6BB1",  # lavender purple (Analytics)
-                "#4A7C59",  # dark green (Governance)
-                "#B5763A",  # brown orange (Data Analysis)
-                "#6B8E9F",  # slate blue (Blockchain)
-                "#A05C7B",  # dusty pink (Consulting)
-                "#5B6B7A",  # dark slate (Data Privacy)
+                "#4A74A6",  # medium blue
+                "#3E5F8A",  # darker blue
+                "#6F9BC5",  # light blue
+                "#8FB3CF",  # pale blue
+                "#B07A97",  # mauve/pink
+                "#C996B0",  # light pink
+                "#8E5C78",  # dark purple
+                "#D4A13A",  # gold
+                "#E2BC63",  # light gold
+                "#A97C2B",  # mustard
+                "#E6E07A",  # pale yellow
+                "#C6C15A",  # yellow-green
+                "#4F4F4F",  # dark grey
             ],
             hover_data={"demand_count": True},
             labels={"demand_count": "Postings"},
