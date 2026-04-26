@@ -35,9 +35,9 @@ def show(job_title: str, finyear: int | None = None):
         name=job_title,
         orientation="h",
         width=0.4,
-        marker_color="#5B8DB8",
-        line=dict(color="#FFFFFF", width=1.5),
-        fillcolor="#4A74A6",
+        marker_color="#5B8FAF",
+        line=dict(color="#E6EEF5", width=2),
+        fillcolor="#5B8FAF",
         boxmean=False,
         customdata=[[fmt(low), fmt(q1), fmt(median), fmt(mean), fmt(q3), fmt(high)]],
         hovertemplate=(
