@@ -132,14 +132,15 @@ def get_monthly_postings(
         "job_title": job_title,
     })
     if not df.empty:
-        df["month_label"] = pd.to_datetime(
-            df["finyear"].astype(str) + "-" + df["finmonth"].astype(str).str.zfill(2) + "-01"
-        ).dt.strftime("%b %Y")
-    return df
-
-
-@st.cache_data(ttl=600)
-def get_sectors_by_demand(finyear: int | None = None):
+        if finyear:
+            df["month_label"] = pd.to_datetime(
+                df["finyear"].astype(str) + "-" + df["finmonth"].astype(str).str.zfill(2) + "-01"
+            ).dt.strftime("%b")
+        else:
+            df["month_label"] = pd.to_datetime(
+                df["finyear"].astype(str) + "-" + df["finmonth"].astype(str).str.zfill(2) + "-01"
+            ).dt.strftime("%b %Y")
+    return df(finyear: int | None = None):
     sql = """
         SELECT
             di.industry_name,
