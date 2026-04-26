@@ -106,9 +106,6 @@ def show():
 
         finyear = parse_year(selected_year)
 
-        st.markdown(f"### {sector}")
-        st.markdown("---")
-
         if selected_view == "Roles":
             roles_df = get_roles_within_sector(sector, finyear=finyear)
             if not roles_df.empty:
