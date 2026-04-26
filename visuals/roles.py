@@ -35,12 +35,9 @@ def show():
     # Page 1 — Emerging & Declining Roles overview
     if st.session_state.roles_page == "overview":
 
-        col1, col2, spacer = st.columns([1, 1, 2])
+        col1, spacer = st.columns([1, 3])
         with col1:
             selected_year = st.selectbox("Year", year_options, index=0, key="roles_year")
-        with col2:
-            status_options = ["All", "Growing", "Declining"]
-            selected_status = st.selectbox("Status", status_options, index=0, key="roles_status")
 
         finyear = parse_year(selected_year)
         df = get_emerging_declining_roles(finyear=finyear)
@@ -50,13 +47,6 @@ def show():
             return
 
         df["status"] = df["pct_change"].apply(lambda x: "Growing" if x >= 0 else "Declining")
-
-        if selected_status != "All":
-            df = df[df["status"] == selected_status]
-
-        if df.empty:
-            st.info(f"No {selected_status.lower()} roles found.")
-            return
 
         df = df.sort_values("pct_change", ascending=True)
         colours = df["status"].map({"Growing": "#4C9BE8", "Declining": "#B0BEC5"}).tolist()
@@ -106,7 +96,7 @@ def show():
         ))
 
         fig.update_layout(
-            title=dict(text="Growing & Declining Roles", x=0.5),
+            title=dict(text="Growing & Declining Roles", x=0.5, xanchor="center"),
             xaxis=dict(
                 title="% Change in Job Demand",
                 zeroline=True,
