@@ -216,7 +216,7 @@ def show_monthly():
         xaxis_title="Month",
         yaxis_title="Number of<br>postings",
         yaxis=dict(rangemode="tozero"),
-        height=600,
+        height=500,
         showlegend=False,
         margin=dict(l=20, r=20, t=60, b=60),
     )
