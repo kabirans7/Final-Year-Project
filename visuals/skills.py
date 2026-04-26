@@ -247,10 +247,14 @@ def show():
         )
 
         fig.update_traces(
-            line=dict(color=CB_COLORS[0]),
-            marker=dict(color=CB_COLORS[0]),
+            line=dict(color="#56B4E9", width=2),
+            marker=dict(
+                color="#0d1b2e",
+                size=10,
+                symbol="circle",
+                line=dict(color="#56B4E9", width=2),
+            ),
         )
-
         fig.update_layout(
             xaxis_title="Month",
             yaxis_title="Number of<br>postings",
