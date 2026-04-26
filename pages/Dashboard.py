@@ -22,7 +22,7 @@ st.markdown("""
             padding-top: 1rem !important;
             margin-top: 0rem !important;
             max-width: 100% !important;
-            padding-left: 2rem !important;
+            padding-left: 0.5rem !important;
             padding-right: 2rem !important;
         }
         div[data-testid="stTabs"] {
@@ -44,7 +44,7 @@ logo_b64 = __import__('base64').b64encode(open('images/GradScope_Image.png', 'rb
 
 st.markdown(f"""
     <img src="data:image/png;base64,{logo_b64}"
-         style="position: fixed; top: -10px; left: -10px; width: 180px; height: 180px; object-fit: contain; border-radius: 8px; z-index: 999;">
+         style="position: fixed; top: 5px; left: 5px; width: 180px; height: 180px; object-fit: contain; border-radius: 8px; z-index: 999;">
 """, unsafe_allow_html=True)
 
 _, spacer, nav1, nav2 = st.columns([0.05, 0.70, 0.1, 0.1])
