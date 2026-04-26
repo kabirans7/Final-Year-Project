@@ -86,7 +86,8 @@ def show():
             hovertemplate=(
                 "<b>%{y}</b><br>"
                 "% Change: %{x:+.1f}%<br>"
-                "Postings: %{customdata[0]} → %{customdata[1]}"
+                "Postings: %{customdata[0]} → %{customdata[1]}<br>"
+                "🔍 Click to view insights"
                 "<extra></extra>"
             ),
             showlegend=False,
@@ -231,7 +232,7 @@ def show_careers():
 
         fig.update_traces(
             textinfo="label+value",
-            hovertemplate="<b>%{label}</b><br>Postings: %{value}<extra></extra>",
+            hovertemplate="<b>%{label}</b><br>Postings: %{value}<br>🔍 Click to view insights<extra></extra>",
             marker=dict(line=dict(width=1, color="#0d1b2e")),
         )
 
