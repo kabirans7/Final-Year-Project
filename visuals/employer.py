@@ -85,32 +85,26 @@ def show():
             st.rerun()
 
     # ---------------------------------------------------------------
-    # Page 2 — Roles & Skills tabs for selected company
+    # Page 2 — Roles & Skills for selected company
     # ---------------------------------------------------------------
     elif st.session_state.employers_page == "company_detail":
         company = st.session_state.selected_company
 
-        nav_placeholder = st.empty()
-
-        with nav_placeholder.container():
-            nav_col, col1, col2, spacer = st.columns([0.5, 1, 1, 1])
-            with nav_col:
-                st.markdown("<br>", unsafe_allow_html=True)
-                if st.button("< Back", key="employers_back"):
-                    st.session_state.employers_page = "overview"
-                    st.session_state.selected_company = None
-                    st.rerun()
-            with col1:
-                selected_year = st.selectbox(
-                    "Year", year_options, index=0, key="company_detail_year"
-                )
-            with col2:
-                selected_view = st.selectbox("View", ["Roles", "Skills"], key="company_detail_view")
+        nav_col, col1, col2, spacer = st.columns([0.5, 1, 1, 1])
+        with nav_col:
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("< Back", key="employers_back"):
+                st.session_state.employers_page = "overview"
+                st.session_state.selected_company = None
+                st.rerun()
+        with col1:
+            selected_year = st.selectbox(
+                "Year", year_options, index=0, key="company_detail_year"
+            )
+        with col2:
+            selected_view = st.selectbox("View", ["Roles", "Skills"], key="company_detail_view")
 
         finyear = parse_year(selected_year)
-
-        st.markdown(f"### {company}")
-        st.markdown("---")
 
         if selected_view == "Roles":
             roles_df = get_roles_by_company(company, finyear=finyear)
