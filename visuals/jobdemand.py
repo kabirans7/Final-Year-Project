@@ -159,31 +159,14 @@ def show_monthly():
     def parse_year(selected: str) -> int | None:
         return None if selected == "All Time" else int(selected)
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, spacer = st.columns([1, 3])
 
     with col1:
         selected_year = st.selectbox("Year", year_options, index=0, key="monthly_year")
-    with col2:
-        industries = ["All"] + get_all_industries()
-        selected_sector = st.selectbox("Sector", industries, index=0, key="monthly_sector")
-    with col3:
-        cities = ["All"] + get_all_cities()
-        selected_city = st.selectbox("Location", cities, index=0, key="monthly_location")
-    with col4:
-        roles = ["All"] + get_all_job_titles()
-        selected_role = st.selectbox("Role", roles, index=0, key="monthly_role")
 
     finyear = parse_year(selected_year)
-    industry = None if selected_sector == "All" else selected_sector
-    city = None if selected_city == "All" else selected_city
-    role = None if selected_role == "All" else selected_role
 
-    df = get_monthly_postings(
-        finyear=finyear,
-        industry_name=industry,
-        city=city,
-        job_title=role,
-    )
+    df = get_monthly_postings(finyear=finyear)
 
     if df.empty:
         st.warning("No data available for the selected filters.")
