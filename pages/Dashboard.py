@@ -31,7 +31,7 @@ st.markdown("""
         button[data-baseweb="tab"] p,
         button[data-baseweb="tab"],
         [data-testid="stTabs"] button p {
-            font-size: 1.15rem !important;
+            font-size: 1.4rem !important;
             font-weight: 600 !important;
         }
         div[data-testid="stHorizontalBlock"] button[kind="secondary"] {
