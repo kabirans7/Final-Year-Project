@@ -254,7 +254,7 @@ def show_careers():
         )
 
         fig.update_layout(
-            title_x=0.5,
+            title=dict(text="Career Options Related to Industry", x=0.5, xanchor="center"),
             height=500,
             margin=dict(l=10, r=10, t=60, b=10),
         )
