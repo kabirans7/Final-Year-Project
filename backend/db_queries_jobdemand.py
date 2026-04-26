@@ -108,6 +108,7 @@ def get_monthly_postings(
 ):
     sql = """
         SELECT
+            d.finyear,
             d.finmonth,
             COUNT(*) AS demand_count
         FROM "FACT_Job_Posting" jp
@@ -121,8 +122,8 @@ def get_monthly_postings(
           AND (:industry_name IS NULL OR di.industry_name = :industry_name)
           AND (:city IS NULL OR dl.city = :city)
           AND (:job_title IS NULL OR jt.job_title = :job_title)
-        GROUP BY d.finmonth
-        ORDER BY d.finmonth
+        GROUP BY d.finyear, d.finmonth
+        ORDER BY d.finyear, d.finmonth
     """
     df = _query(sql, {
         "finyear": finyear,
@@ -132,8 +133,8 @@ def get_monthly_postings(
     })
     if not df.empty:
         df["month_label"] = pd.to_datetime(
-            df["finmonth"].astype(str).str.zfill(2), format="%m"
-        ).dt.strftime("%b")
+            df["finyear"].astype(str) + "-" + df["finmonth"].astype(str).str.zfill(2) + "-01"
+        ).dt.strftime("%b %Y")
     return df
 
 
