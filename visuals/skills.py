@@ -6,6 +6,14 @@ from backend.db_queries_skill import (
     get_skill_trend,
 )
 
+# Colorblind-friendly palette
+CB_COLORS = [
+    "#4C8BF5",  # blue
+    "#F5A623",  # amber
+    "#E8789A",  # pink
+    "#6B6B6B",  # dark grey
+]
+
 
 def show():
     # Initialise session state
@@ -26,6 +34,10 @@ def show():
     def parse_year(selected: str) -> int | None:
         return None if selected == "All Time" else int(selected)
 
+    def assign_colors(categories: list) -> list:
+        """Cycle through CB_COLORS for as many bars as needed."""
+        return [CB_COLORS[i % len(CB_COLORS)] for i in range(len(categories))]
+
     # ---------------------------------------------------------------
     # Page 1 — Skill Categories
     # ---------------------------------------------------------------
@@ -42,16 +54,24 @@ def show():
             st.warning("No skill category data available.")
             return
 
+        colors = assign_colors(df["skill_category"].tolist())
+
         fig = px.bar(
             df,
             x="skill_category",
             y="demand_count",
-            color="skill_category",
             labels={
                 "skill_category": "Skill Category",
                 "demand_count": "Number of postings",
             },
             title="Technical & Soft Skills Demand",
+        )
+
+        fig.update_traces(
+            marker=dict(
+                color=colors,
+                line=dict(width=0),
+            ),
         )
 
         fig.update_layout(
@@ -63,11 +83,6 @@ def show():
             title_x=0.5,
             height=600,
             transition={"duration": 600, "easing": "cubic-in-out"},
-        )
-
-        fig.update_traces(
-            marker=dict(line=dict(width=0)),
-            hovertemplate="<b>%{x}</b><br>Postings: %{y}<br><i>🔍 Click to explore deeper insights</i><extra></extra>",
         )
 
         event = st.plotly_chart(
@@ -145,16 +160,24 @@ def show():
             st.warning("No skills available for the selected filters.")
             return
 
+        colors = assign_colors(group_df["skill_name"].tolist())
+
         fig = px.bar(
             group_df,
             x="skill_name",
             y="demand_count",
-            color="skill_name",
             labels={
                 "skill_name": "Skill",
                 "demand_count": "Number of postings",
             },
             title="Technical & Soft Skills Demand",
+        )
+
+        fig.update_traces(
+            marker=dict(
+                color=colors,
+                line=dict(width=0),
+            ),
         )
 
         fig.update_layout(
@@ -166,11 +189,6 @@ def show():
             title_x=0.5,
             height=600,
             transition={"duration": 600, "easing": "cubic-in-out"},
-        )
-
-        fig.update_traces(
-            marker=dict(line=dict(width=0)),
-            hovertemplate="<b>%{x}</b><br>Postings: %{y}<br><i>🔍 Click to explore deeper insights</i><extra></extra>",
         )
 
         event = st.plotly_chart(
@@ -222,6 +240,11 @@ def show():
                 "demand_count": "Number of postings",
             },
             title=f"Demand Trends Over Time For {skill}",
+        )
+
+        fig.update_traces(
+            line=dict(color=CB_COLORS[0]),
+            marker=dict(color=CB_COLORS[0]),
         )
 
         fig.update_layout(
