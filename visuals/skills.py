@@ -118,7 +118,7 @@ def show():
 
         with nav_col:
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("← Back"):
+            if st.button("< Back"):
                 st.session_state.skill_page = "category"
                 st.session_state.selected_category = None
                 st.session_state.selected_group = None
@@ -178,7 +178,7 @@ def show():
                 "skill_name": "Skill",
                 "demand_count": "Number of postings",
             },
-            title="Technical & Soft Skills Demand",
+            title=f"{category}",
         )
 
         fig.update_traces(
@@ -195,7 +195,7 @@ def show():
             xaxis_title="Skill",
             yaxis_title="Number of<br>postings",
             yaxis=dict(rangemode="tozero"),
-            title_x=0.5,
+            title=dict(text=f"{category}", x=0.5, xanchor="center"),
             height=600,
             transition={"duration": 600, "easing": "cubic-in-out"},
         )
@@ -223,7 +223,7 @@ def show():
 
         with nav_col:
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("← Back"):
+            if st.button("< Back"):
                 st.session_state.skill_page = "skills"
                 st.rerun()
 
