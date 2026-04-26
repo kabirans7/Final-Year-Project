@@ -84,7 +84,6 @@ def show():
             xaxis_tickangle=-30,
             xaxis_title="Skill Category",
             yaxis_title="Number of<br>postings",
-            yaxis=dict(rangemode="tozero"),
             title_x=0.5,
             title_font=dict(size=22),
             xaxis=dict(title_font=dict(size=16), tickfont=dict(size=13)),
