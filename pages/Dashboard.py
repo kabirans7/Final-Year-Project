@@ -42,11 +42,11 @@ st.markdown("""
 # ---------------------------------------------------------------
 logo_b64 = __import__('base64').b64encode(open('images/GradScope_Image.png', 'rb').read()).decode()
 
-col1, spacer, nav1, nav2 = st.columns([0.08, 0.67, 0.1, 0.1])
+col1, spacer, nav1, nav2 = st.columns([0.06, 0.69, 0.1, 0.1])
 with col1:
     st.markdown(f"""
         <img src="data:image/png;base64,{logo_b64}"
-             style="width: 80px; height: 80px; object-fit: contain; border-radius: 8px; display: block; margin-top: -10px;">
+             style="width: 110px; height: 110px; object-fit: contain; border-radius: 8px; display: block; margin-top: -20px; margin-left: -10px;">
     """, unsafe_allow_html=True)
 with nav1:
     if st.button("Home", use_container_width=True):
