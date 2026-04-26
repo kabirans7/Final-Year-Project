@@ -346,8 +346,6 @@ def show_careers():
 
         finyear = parse_year(selected_year)
 
-        st.markdown(f"### {job_title}")
-
         if selected_view == "Salary":
             show_salary(job_title, finyear=finyear)
 
