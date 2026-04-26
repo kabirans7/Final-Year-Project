@@ -162,7 +162,7 @@ def show_monthly():
     col1, spacer = st.columns([1, 3])
 
     with col1:
-        selected_year = st.selectbox("Year", year_options, index=0, key="monthly_year")
+        selected_year = st.selectbox("Year", [str(y) for y in fin_years], index=0, key="monthly_year")
 
     finyear = parse_year(selected_year)
 
