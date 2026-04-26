@@ -14,7 +14,7 @@ CB_COLORS = [
     "#999999",  # grey
     "#56B4E9",  # sky blue
     "#009E73",  # bluish green
-    "#F0E442",  # yellow
+    "#D55E00",  # vermillion
     "#0072B2",  # deep blue
 ]
 
