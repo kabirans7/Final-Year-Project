@@ -118,7 +118,7 @@ def show():
             ),
             yaxis=dict(title="Job Roles"),
             legend=dict(orientation="v", x=1.02, y=1),
-            height=600,
+            height=500,
             margin=dict(l=20, r=20, t=60, b=60),
         )
 
@@ -255,7 +255,7 @@ def show_careers():
 
         fig.update_layout(
             title_x=0.5,
-            height=650,
+            height=500,
             margin=dict(l=10, r=10, t=60, b=10),
         )
 
