@@ -205,7 +205,7 @@ def show_monthly():
         line=dict(color="#56B4E9", width=2),
         marker=dict(
             color="#56B4E9",
-            size=14,
+            size=18,
             symbol="circle",
             line=dict(color="#FFFFFF", width=2),
         ),
