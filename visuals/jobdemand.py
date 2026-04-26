@@ -50,7 +50,7 @@ def show():
             )
 
         fig.update_layout(
-            title_x=0.5,
+            title=dict(x=0.5, xanchor="center"),
             xaxis_title="Time (Month-Year)",
             yaxis_title="Number of<br>postings",
             yaxis=dict(rangemode="tozero"),
@@ -195,7 +195,7 @@ def show_monthly():
     )
 
     fig.update_layout(
-        title_x=0.5,
+        title=dict(text="Total Number of Monthly Job Postings Over Time", x=0.5, xanchor="center"),
         xaxis_title="Month",
         yaxis_title="Number of<br>postings",
         yaxis=dict(rangemode="tozero"),
