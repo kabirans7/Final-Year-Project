@@ -51,7 +51,7 @@ def show(job_title: str, finyear: int | None = None):
         showlegend=False,
         height=350,
         margin=dict(l=20, r=20, t=60, b=40),
-        xaxis=dict(rangemode="tozero"),
+        xaxis=dict(rangemode="tozero", dtick=1, tickformat="d"),
     )
 
     st.plotly_chart(fig, use_container_width=True, config=plotly_config)
