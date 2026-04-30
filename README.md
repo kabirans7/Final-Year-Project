@@ -7,15 +7,17 @@ The goal of this project is to help students, academics, and career consultants 
 ---
 ## What this project does
 
-GradScope allows you to:
+GradScope showcases valuable insights that delve into:
 
-- View job demand trends over time  
-- Identify the most in-demand skills  
-- Explore growing and declining job roles  
-- Analyse salary distributions across roles  
-- Compare hiring demand across industries  
-- View geographic distribution of jobs  
-- Interact with filters and drill-down features  
+- Growing & Declining Technical Skills
+- Most & Least In-Demand Graduate Job Roles
+- Most Actively Recruiting Companies/Employers
+- Salary Insights
+- Geographic Distribution of Job Opportunities
+- Experience & Qualification Requirements for Entry-Level Jobs
+- Forecast of Future Graduate Job Market Demand
+
+Users can apply filters and drill-down interactions for data visuals.
 
 ---
 
