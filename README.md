@@ -23,7 +23,6 @@ GradScope allows you to:
 - Python  
 - Streamlit
 - PostgreSQL (DBeaver Local Database and Neon Cloud Database)
-- 
 ---
 
 ## Running the project
