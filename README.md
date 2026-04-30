@@ -1,53 +1,68 @@
 # GradScope – Graduate Labour Market Intelligence Dashboard
 
-GradScope is my final year project, developed as part of my Business Information Systems degree at the University of Westminster.
+GradScope is my final year project. It is a data analytics dashboard built with Python and Streamlit that explores the graduate job market. The platform allows users to analyse job demand, in-demand skills, salary trends, and sector insights through interactive visualisations.
 
-It is a data-driven dashboard designed to analyse the graduate employment market and provide actionable insights for students, academics, and career consultants. The platform transforms complex job market data into interactive, easy-to-understand visualisations to support better career decision-making.
-
-GradScope was built with Python (Streamlit) and PostgreSQL (DBeaver and Neon)
+The goal of this project is to help students, academics, and career consultants better understand the graduate labour market and make informed decisions.
 
 ---
+## What this project does
 
-## Key Features of the dashboard
+GradScope allows you to:
 
-- Job Demand Trends: Analyse how job postings evolve over time (monthly/yearly trends + forecasting)
-
-- Skills Intelligence: Identify in-demand, growing, and declining skills with drill-down capability
-
-- Job Roles Analysis: Discover which roles are growing or declining in the graduate market
-
-- Sector & Industry Insights: Compare hiring demand across industries
-
-- Salary Insights: Explore salary distributions using box plots (median, quartiles, outliers)
-
-- Geographic Distribution: View regional demand across locations
-
-- Interactive Filters & Drill-Downs: Dynamically explore data by year, role, skill category, and more
-
-- Forecasting: Predict future job demand trends (with limitations acknowledged)
+- View job demand trends over time  
+- Identify the most in-demand skills  
+- Explore growing and declining job roles  
+- Analyse salary distributions across roles  
+- Compare hiring demand across industries  
+- View geographic distribution of jobs  
+- Interact with filters and drill-down features  
 
 ---
 
 ## Technology Stack
+- Python  
+- Streamlit
+- PostgreSQL (DBeaver Local Database and Neon Cloud Database)
+- 
+---
 
-**Frontend / App Layer**
-- Python (Streamlit)
-- Plotly Express  
+## Running the project
 
-**Backend / Data Layer**
-- PostgreSQL  
-- Neon Serverless PostgreSQL  
+Due to security reasons, this project cannot be run locally without access to the database credentials.
+The database is hosted securely using Neon, and credentials are not included in this repository.
 
-**Data Processing**
-- Pandas  
-- Psycopg2  
+To view the full working system, please use the live deployed version: https://gradscope.streamlit.app/
 
-**Deployment**
-- Streamlit Community Cloud  
-- GitHub  
+---
+## Data Source
+
+This project uses the IT Job Opportunities Dataset (2019–2023) from Kaggle.
+
+Note: The dataset is synthetic and not real-time.
 
 ---
 
+## A couple of notes
+
+- The dashboard connects to a cloud database (Neon), not a local database  
+- Database credentials are hidden for security reasons  
+- The deployed version fully demonstrates all features of the system
+- 
+---
+
+## Future Improvements
+
+- Integrate real-time job market APIs  
+- Improve mobile responsiveness  
+- Enhance forecasting models  
+- Add more advanced filtering options  
 
 ---
 
+## Author
+
+Kabir Ansari  
+Business Computing BSc (Hons)  
+University of Westminster  
+
+Email: kabir.ansari@outlook.com
