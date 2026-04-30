@@ -1,7 +1,69 @@
-**Business Information Systems Final Project**
+# 🎓 GradScope – Graduate Labour Market Intelligence Dashboard
 
-Hello everyone! This is my final year project at the University of Westminster!
+GradScope is my final year project, developed as part of my Business Computing degree at the University of Westminster.
 
-Which focuses on GradScope, a data dashboard analysing the employment market. 
+It is a data-driven dashboard designed to analyse the graduate employment market and provide actionable insights for students, academics, and career consultants. The platform transforms complex job market data into interactive, easy-to-understand visualisations to support better career decision-making.
 
-Thank You!
+---
+
+## 🚀 Live Application
+
+🔗 Streamlit App: *(Add your deployed link here)*  
+🔗 GitHub Repository: https://github.com/kabirans7/Final-Year-Project  
+
+---
+
+## 📊 Key Features
+
+- 📈 Job Demand Trends  
+  Analyse how job postings evolve over time (monthly/yearly trends + forecasting)
+
+- 🧠 Skills Intelligence  
+  Identify in-demand, growing, and declining skills with drill-down capability
+
+- 💼 Job Roles Analysis  
+  Discover which roles are growing or declining in the graduate market
+
+- 🏢 Sector & Industry Insights  
+  Compare hiring demand across industries
+
+- 💰 Salary Insights  
+  Explore salary distributions using box plots (median, quartiles, outliers)
+
+- 🌍 Geographic Distribution  
+  View regional demand across locations
+
+- 🔍 Interactive Filters & Drill-Downs  
+  Dynamically explore data by year, role, skill category, and more
+
+- 📉 Forecasting  
+  Predict future job demand trends (with limitations acknowledged)
+
+---
+
+## 🧱 Tech Stack
+
+**Frontend / App Layer**
+- Python (Streamlit)
+- Plotly Express  
+
+**Backend / Data Layer**
+- PostgreSQL  
+- Neon Serverless PostgreSQL  
+
+**Data Processing**
+- Pandas  
+- Psycopg2  
+
+**Deployment**
+- Streamlit Community Cloud  
+- GitHub  
+
+---
+
+
+---
+
+## ⚙️ Getting Started (Local Setup)
+
+### 1. Clone the repository
