@@ -2,7 +2,7 @@
 
 GradScope is my final year project at the University of Westminster. It is a data analytics dashboard built with Python and Streamlit that explores the graduate job market. The platform allows users to analyse job demand, in-demand skills, salary trends, sector insights, etc. through interactive visualisations.
 
-The goal of this project is to help students, academics, and career consultants within universities better understand the graduate labour market and make informed decisions.
+The goal of this project is to help students, academics, and career consultants within universities to better understand the graduate labour market and make informed decisions.
 
 ---
 ## What this project does
