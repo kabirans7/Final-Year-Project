@@ -1,15 +1,16 @@
 import pandas as pd
 import streamlit as st
 from sqlalchemy import text
-from backend.db import get_engine
+from backend.db import get_engine #Neon DB Connection
 
-
+#Establish Neon DB Connection
 def _query(sql: str, params: dict) -> pd.DataFrame:
     engine = get_engine()
     with engine.connect() as conn:
         return pd.read_sql(text(sql), conn, params=params)
 
-
+# Use Case - View Technical & Soft Skills Demand
+# Skill category Level 1 
 @st.cache_data(ttl=600)
 def get_skill_categories(skill_type: str | None = None, finyear: int | None = None):
     sql = """
@@ -27,7 +28,7 @@ def get_skill_categories(skill_type: str | None = None, finyear: int | None = No
     """
     return _query(sql, {"skill_type": skill_type, "finyear": finyear})
 
-
+# Level 2 - Skills Level 2 
 @st.cache_data(ttl=600)
 def get_skills_by_category(category: str, skill_type: str | None = None, finyear: int | None = None):
     sql = """
@@ -52,6 +53,7 @@ def get_skills_by_category(category: str, skill_type: str | None = None, finyear
     return _query(sql, {"category": category, "skill_type": skill_type, "finyear": finyear})
 
 
+# Level 3 & Use Case - View Skill Demand Trends Over Time
 @st.cache_data(ttl=600)
 def get_skill_trend(skill: str, skill_type: str | None = None, finyear: int | None = None):
     sql = """
