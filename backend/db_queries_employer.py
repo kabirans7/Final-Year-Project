@@ -2,7 +2,8 @@ import pandas as pd
 import streamlit as st
 from sqlalchemy import text
 from backend.db import get_engine #Neon connection 
-
+# ttl=600 is a Streamlit function to ensure that the app remembers the results for 10 mins
+# and does not have to keep refreshing (this improves runtime)
 
 #Establish Neon DB connection
 def _query(sql: str, params: dict) -> pd.DataFrame:
