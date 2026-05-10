@@ -1,15 +1,16 @@
 import pandas as pd
 import streamlit as st
 from sqlalchemy import text
-from backend.db import get_engine
+from backend.db import get_engine #Neon connection 
 
 
+#Establish Neon DB connection
 def _query(sql: str, params: dict) -> pd.DataFrame:
     engine = get_engine()
     with engine.connect() as conn:
         return pd.read_sql(text(sql), conn, params=params)
 
-
+# Use Case - Most Active Employers
 @st.cache_data(ttl=600)
 def get_active_employers(finyear: int | None = None):
     sql = """
@@ -26,7 +27,7 @@ def get_active_employers(finyear: int | None = None):
     """
     return _query(sql, {"finyear": finyear})
 
-
+# Drill Down from Most Active Employers - Roles offered by specific company
 @st.cache_data(ttl=600)
 def get_roles_by_company(company_name: str, finyear: int | None = None):
     sql = """
@@ -44,7 +45,7 @@ def get_roles_by_company(company_name: str, finyear: int | None = None):
     """
     return _query(sql, {"company_name": company_name, "finyear": finyear})
 
-
+# Drill Down from Most Active Employers - Skills required by specific company
 @st.cache_data(ttl=600)
 def get_skills_by_company(company_name: str, finyear: int | None = None):
     sql = """
