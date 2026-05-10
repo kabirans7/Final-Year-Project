@@ -62,21 +62,19 @@ def get_role_trend(job_title: str, finyear: int | None = None):
     sql = """
         SELECT
             d.finyear,
-            d.finmonth,
             COUNT(*) AS demand_count
         FROM "FACT_Job_Posting" jp
         JOIN "DIM_Job_Title" jt ON jp.job_title_id = jt.job_title_id
         JOIN "DIM_Date_Posted" d ON jp.date_posted = d.date
         WHERE jt.job_title = :job_title
           AND (:finyear IS NULL OR d.finyear = :finyear)
-        GROUP BY d.finyear, d.finmonth
-        ORDER BY d.finyear, d.finmonth
+        GROUP BY d.finyear
+        ORDER BY d.finyear
     """
     df = _query(sql, {"job_title": job_title, "finyear": finyear})
     if not df.empty:
-        df["month_label"] = pd.to_datetime(
-            df["finyear"].astype(str) + "-" + df["finmonth"].astype(str).str.zfill(2) + "-01"
-        ).dt.strftime("%b %Y")
+        df["year_label"] = pd.to_datetime(
+            df["finyear"].astype(str)       
     return df
 
 
