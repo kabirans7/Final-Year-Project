@@ -164,7 +164,7 @@ def show():
             title=dict(text=f"Demand Trends Over Time For {role}", x=0.5, xanchor="center"),
             xaxis_title="Year",
             yaxis_title="Number of<br>postings",
-            yaxis=dict(rangemode="tozero"),
+            yaxis=dict(rangemode="tozero", dtick=1),
             xaxis=dict(tickangle=-30, type="category"),
         )
 
