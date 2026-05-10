@@ -61,20 +61,25 @@ def get_emerging_declining_roles(finyear: int | None = None):
 def get_role_trend(job_title: str, finyear: int | None = None):
     sql = """
         SELECT
-            y.finyear,
-            COALESCE(COUNT(jp.job_posting_id), 0) AS demand_count
-        FROM (SELECT generate_series(2019, 2023) AS finyear) y
-        LEFT JOIN "DIM_Date_Posted" d ON d.finyear = y.finyear
-        LEFT JOIN "FACT_Job_Posting" jp ON jp.date_posted = d.date
-        LEFT JOIN "DIM_Job_Title" jt ON jp.job_title_id = jt.job_title_id
-            AND jt.job_title = :job_title
-        WHERE (:finyear IS NULL OR y.finyear = :finyear)
-        GROUP BY y.finyear
-        ORDER BY y.finyear
+            d.finyear,
+            COUNT(*) AS demand_count
+        FROM "FACT_Job_Posting" jp
+        JOIN "DIM_Job_Title" jt ON jp.job_title_id = jt.job_title_id
+        JOIN "DIM_Date_Posted" d ON jp.date_posted = d.date
+        WHERE jt.job_title = :job_title
+          AND (:finyear IS NULL OR d.finyear = :finyear)
+        GROUP BY d.finyear
+        ORDER BY d.finyear
     """
     df = _query(sql, {"job_title": job_title, "finyear": finyear})
+    
     if not df.empty:
-        df["year_label"] = df["finyear"].astype(str)       
+        # Fill in missing years with 0
+        all_years = pd.DataFrame({"finyear": range(2019, 2024)})
+        df = all_years.merge(df, on="finyear", how="left").fillna(0)
+        df["demand_count"] = df["demand_count"].astype(int)
+        df["year_label"] = df["finyear"].astype(str)
+    
     return df
 
 
