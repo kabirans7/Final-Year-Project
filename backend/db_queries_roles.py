@@ -73,8 +73,7 @@ def get_role_trend(job_title: str, finyear: int | None = None):
     """
     df = _query(sql, {"job_title": job_title, "finyear": finyear})
     if not df.empty:
-        df["year_label"] = pd.to_datetime(
-            df["finyear"].astype(str)       
+        df["year_label"] = df["finyear"].astype(str)       
     return df
 
 
