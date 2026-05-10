@@ -73,12 +73,13 @@ def get_role_trend(job_title: str, finyear: int | None = None):
     """
     df = _query(sql, {"job_title": job_title, "finyear": finyear})
     
-    if not df.empty:
-        # Fill in missing years with 0
+ if not df.empty:
+    if finyear is None:
+        # Fill in missing years with 0 for All Time view
         all_years = pd.DataFrame({"finyear": range(2019, 2024)})
         df = all_years.merge(df, on="finyear", how="left").fillna(0)
         df["demand_count"] = df["demand_count"].astype(int)
-        df["year_label"] = df["finyear"].astype(str)
+    df["year_label"] = df["finyear"].astype(str)
     
     return df
 
