@@ -32,7 +32,7 @@ Users can apply filters and drill-down interactions for data visuals.
 Due to security reasons, this project cannot be run locally without access to the database credentials.
 The database is hosted securely using Neon, and credentials are not included in this repository.
 
-To view the full working system, please use the live deployed version: https://gradscope.streamlit.app/
+To view the full working system, please use the live deployed version: https://gradscope1.streamlit.app/
 
 ---
 ## Data Source
