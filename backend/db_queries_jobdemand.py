@@ -1,15 +1,16 @@
 import pandas as pd
 import streamlit as st
 from sqlalchemy import text
-from backend.db import get_engine
+from backend.db import get_engine #Neon DB Connection
 
-
+#Establish Neon DB Connection
 def _query(sql: str, params: dict) -> pd.DataFrame:
     engine = get_engine()
     with engine.connect() as conn:
         return pd.read_sql(text(sql), conn, params=params)
 
-
+#Use Case - View Job Demand Trends Over Time
+# Chart 1 - Role filter applied
 @st.cache_data(ttl=600)
 def get_trend_by_role(job_title: str, finyear: int | None = None):
     sql = """
@@ -32,7 +33,7 @@ def get_trend_by_role(job_title: str, finyear: int | None = None):
         ).dt.strftime("%b %Y")
     return df
 
-
+# Chart 2 - Sector Filter applied
 @st.cache_data(ttl=600)
 def get_trend_by_sector(industry_name: str, finyear: int | None = None):
     sql = """
@@ -56,7 +57,7 @@ def get_trend_by_sector(industry_name: str, finyear: int | None = None):
         ).dt.strftime("%b %Y")
     return df
 
-
+# Chart 3 - Location filter applied
 @st.cache_data(ttl=600)
 def get_trend_by_location(city: str, finyear: int | None = None):
     sql = """
@@ -80,25 +81,27 @@ def get_trend_by_location(city: str, finyear: int | None = None):
         ).dt.strftime("%b %Y")
     return df
 
-
+# Dropdown helpers are specific
+# Industry dropdown helper
 @st.cache_data(ttl=3600)
 def get_all_industries():
     sql = """SELECT DISTINCT industry_name FROM "DIM_Industry" ORDER BY industry_name"""
     return _query(sql, {})["industry_name"].tolist()
 
-
+# Location dropdown helper
 @st.cache_data(ttl=3600)
 def get_all_cities():
     sql = """SELECT DISTINCT city FROM "DIM_Location" ORDER BY city"""
     return _query(sql, {})["city"].tolist()
 
-
+# Role dropdown helper
 @st.cache_data(ttl=3600)
 def get_all_job_titles():
     sql = """SELECT DISTINCT job_title FROM "DIM_Job_Title" ORDER BY job_title"""
     return _query(sql, {})["job_title"].tolist()
+# --------------------------------------------------
 
-
+# Use Case - View total number of monthly postings
 @st.cache_data(ttl=600)
 def get_monthly_postings(
     finyear: int | None = None,
@@ -141,8 +144,10 @@ def get_monthly_postings(
                 df["finyear"].astype(str) + "-" + df["finmonth"].astype(str).str.zfill(2) + "-01"
             ).dt.strftime("%b %Y")
     return df
+# --------------------------------------------------
 
-
+# Use Case - View sectors with high graduate hiring demand
+# Ranking of sectors
 @st.cache_data(ttl=600)
 def get_sectors_by_demand(finyear: int | None = None):
     sql = """
@@ -160,6 +165,7 @@ def get_sectors_by_demand(finyear: int | None = None):
     return _query(sql, {"finyear": finyear})
 
 
+# Drill-down roles within each sector
 @st.cache_data(ttl=600)
 def get_roles_within_sector(industry_name: str, finyear: int | None = None):
     sql = """
@@ -179,6 +185,7 @@ def get_roles_within_sector(industry_name: str, finyear: int | None = None):
     return _query(sql, {"industry_name": industry_name, "finyear": finyear})
 
 
+# Drill-down skills for each sector
 @st.cache_data(ttl=600)
 def get_skills_within_sector(industry_name: str, finyear: int | None = None):
     sql = """
@@ -200,6 +207,7 @@ def get_skills_within_sector(industry_name: str, finyear: int | None = None):
     return _query(sql, {"industry_name": industry_name, "finyear": finyear})
 
 
+# Drill down salary insights for each sector
 @st.cache_data(ttl=600)
 def get_salary_within_sector(industry_name: str, finyear: int | None = None):
     sql = """
