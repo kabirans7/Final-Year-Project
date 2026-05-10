@@ -145,8 +145,8 @@ def show():
             return
 
         fig = px.line(
-            df, x="month_label", y="demand_count", markers=True,
-            labels={"month_label": "Month", "demand_count": "Number of postings"},
+            df, x="year_label", y="demand_count", markers=True,
+            labels={"year_label": "Year", "demand_count": "Number of postings"},
             title=f"Demand Trends Over Time For {role}",
         )
 
