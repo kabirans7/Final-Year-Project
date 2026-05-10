@@ -10,6 +10,7 @@ def _query(sql: str, params: dict) -> pd.DataFrame:
         return pd.read_sql(text(sql), conn, params=params)
 
 
+# Use Case - View growing and declining roles
 @st.cache_data(ttl=600)
 def get_emerging_declining_roles(finyear: int | None = None):
     year_end = finyear if finyear else 2023
@@ -57,6 +58,7 @@ def get_emerging_declining_roles(finyear: int | None = None):
         return pd.read_sql(text(sql), conn)
 
 
+# Drilldown - Trend for each role
 @st.cache_data(ttl=600)
 def get_role_trend(job_title: str, finyear: int | None = None):
     sql = """
@@ -82,7 +84,9 @@ def get_role_trend(job_title: str, finyear: int | None = None):
 
     return df
 
+# ------------------------------------------------
 
+# Use Case - View Career Options Related to Industry
 @st.cache_data(ttl=600)
 def get_career_options(finyear: int | None = None):
     sql = """
@@ -101,7 +105,7 @@ def get_career_options(finyear: int | None = None):
     """
     return _query(sql, {"finyear": finyear})
 
-
+# Drilldown roles for each industry
 @st.cache_data(ttl=600)
 def get_roles_by_industry(industry_name: str, finyear: int | None = None):
     sql = """
@@ -120,7 +124,7 @@ def get_roles_by_industry(industry_name: str, finyear: int | None = None):
     """
     return _query(sql, {"industry_name": industry_name, "finyear": finyear})
 
-
+# Salary insights of drilled down role
 @st.cache_data(ttl=600)
 def get_salary_by_role(job_title: str, finyear: int | None = None):
     sql = """
@@ -140,6 +144,7 @@ def get_salary_by_role(job_title: str, finyear: int | None = None):
     return _query(sql, {"job_title": job_title, "finyear": finyear})
 
 
+# Geographic insights of drilled down role
 @st.cache_data(ttl=600)
 def get_geography_by_role(job_title: str, finyear: int | None = None, city: str | None = None):
     sql = """
@@ -160,6 +165,7 @@ def get_geography_by_role(job_title: str, finyear: int | None = None, city: str 
     return _query(sql, {"job_title": job_title, "finyear": finyear, "city": city})
 
 
+# Experience insights of drilled down role
 @st.cache_data(ttl=600)
 def get_experience_by_role(job_title: str, finyear: int | None = None):
     sql = """
