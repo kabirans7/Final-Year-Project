@@ -165,7 +165,7 @@ def show():
             xaxis_title="Year",
             yaxis_title="Number of<br>postings",
             yaxis=dict(rangemode="tozero"),
-            xaxis=dict(tickangle=-30, type="category),
+            xaxis=dict(tickangle=-30, type="category"),
         )
 
         st.plotly_chart(fig, use_container_width=True, config=plotly_config)
