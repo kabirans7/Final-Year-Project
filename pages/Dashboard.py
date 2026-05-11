@@ -116,8 +116,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------------
-# Tabbed Layout
-# ---------------------------------------------------------------
+# Dashboard Tabs
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "Skills",
     "Roles",
@@ -127,7 +126,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 ])
 
 with tab1:
-    with st.container(border=True):
+    with st.container(border=True): #st.container is the border around the visuals
         show_skills()
 
 with tab2:
