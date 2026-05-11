@@ -7,30 +7,35 @@ from backend.db_queries_employer import (
 )
 
 
-# Use Case  - Active Employers
 def show():
+
+    # Disable Plotly toolbar
     plotly_config = {"displayModeBar": False}
 
+    # Initialise session state defaults if not already set
     for key, default in [
         ("employers_page", "overview"),
-        ("selected_company", None),
+        ("selected_company", None),  # None until user selects a company
     ]:
         if key not in st.session_state:
             st.session_state[key] = default
 
+    # Year filter options
     fin_years = [2019, 2020, 2021, 2022, 2023]
     year_options = ["All Time"] + [str(y) for y in fin_years]
 
     def parse_year(selected: str) -> int | None:
+        # Convert selected year to int, or None for "All Time"
         return None if selected == "All Time" else int(selected)
 
-    # ---------------------------------------------------------------
+    # ------------------------------------------------------------------
     # Page 1 — Active Employers bar chart
-    # ---------------------------------------------------------------
+    # ------------------------------------------------------------------
     if st.session_state.employers_page == "overview":
 
         col1, spacer = st.columns([1, 2])
         with col1:
+            # Year filter dropdown
             selected_year = st.selectbox("Year", year_options, index=0, key="employers_year")
 
         finyear = parse_year(selected_year)
@@ -42,6 +47,7 @@ def show():
 
         df = df.sort_values("demand_count", ascending=True)
 
+        # Horizontal bar chart — sorted by job posting count
         fig = px.bar(
             df,
             x="demand_count",
@@ -57,6 +63,7 @@ def show():
             range_color=[0, df["demand_count"].max()],
         )
 
+        # Chart layout
         fig.update_layout(
             title_x=0.5,
             xaxis_title="Number of Job Postings",
@@ -67,10 +74,12 @@ def show():
             margin=dict(l=20, r=20, t=60, b=60),
         )
 
+        # Hover card
         fig.update_traces(
             hovertemplate="<b>%{y}</b><br>Postings: %{x}<br><i>🔍 Click to explore deeper insights</i><extra></extra>",
         )
 
+        # Render interactive bar chart — captures click events for company drilldown
         event = st.plotly_chart(
             fig,
             on_select="rerun",
@@ -79,20 +88,22 @@ def show():
             config=plotly_config,
         )
 
+        # On bar click, store selected company and navigate to detail page
         if event and event.selection and event.selection.get("points"):
             st.session_state.selected_company = event.selection["points"][0]["y"]
             st.session_state.employers_page = "company_detail"
             st.rerun()
 
-    # ---------------------------------------------------------------
+    # ------------------------------------------------------------------
     # Page 2 — Roles & Skills for selected company
-    # ---------------------------------------------------------------
+    # ------------------------------------------------------------------
     elif st.session_state.employers_page == "company_detail":
         company = st.session_state.selected_company
 
         nav_col, col1, spacer = st.columns([0.8, 1, 2])
         with nav_col:
             st.markdown("<br>", unsafe_allow_html=True)
+            # Back button — returns to overview and clears selected company
             if st.button("← Back", key="employers_back"):
                 st.session_state.employers_page = "overview"
                 st.session_state.selected_company = None
@@ -107,6 +118,7 @@ def show():
         st.markdown("<br>", unsafe_allow_html=True)
         tab1, tab2 = st.tabs(["Roles", "Skills"])
 
+        # Tab 1 — Roles offered by selected company
         with tab1:
             roles_df = get_roles_by_company(company, finyear=finyear)
             if roles_df.empty:
@@ -135,6 +147,7 @@ def show():
                 )
                 st.plotly_chart(fig_roles, use_container_width=True, config=plotly_config)
 
+        # Tab 2 — Skills required by selected company
         with tab2:
             skills_df = get_skills_by_company(company, finyear=finyear)
             if skills_df.empty:
