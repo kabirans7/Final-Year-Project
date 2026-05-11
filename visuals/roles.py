@@ -14,7 +14,7 @@ from visuals.experience import show as show_experience
 
 
 # ---------------------------------------------------------------
-# Use Case 3 — Emerging & Declining Roles
+# Use Case - Growing & Declining Roles
 # ---------------------------------------------------------------
 def show():
     plotly_config = {"displayModeBar": False}
@@ -53,8 +53,8 @@ def show():
 
         x_min = df["pct_change"].min()
         x_max = df["pct_change"].max()
-        x_pad_left = abs(x_min) * 0.45
-        x_pad_right = abs(x_max) * 0.30
+        x_pad_left = abs(x_min) * 0.45 #Padding of bars to left
+        x_pad_right = abs(x_max) * 0.30 #Padding of bars to right
 
         tick_start = math.floor((x_min - x_pad_left) / 10) * 10
         tick_end = math.ceil((x_max + x_pad_right) / 10) * 10
@@ -62,6 +62,7 @@ def show():
 
         fig = go.Figure()
 
+        # Hover
         fig.add_trace(go.Bar(
             y=df["job_title"],
             x=df["pct_change"],
@@ -177,6 +178,7 @@ def show():
 def show_careers():
     plotly_config = {"displayModeBar": False}
 
+    # Initial visual
     for key, default in [
         ("careers_page", "treemap"),
         ("selected_industry", None),
