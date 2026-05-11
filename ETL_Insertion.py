@@ -21,6 +21,7 @@ def run_etl():
     # Step 3: Load
     load_data(tables)
 
+    # 55 equal signs in a row to visually separate the terminal messages
     print("=" * 55)
     print("   ETL Pipeline Complete")
     print("=" * 55)
