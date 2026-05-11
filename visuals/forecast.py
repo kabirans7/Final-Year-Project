@@ -10,9 +10,10 @@ def apply_forecast(fig, df, x_col="month_label", y_col="demand_count", color=Non
     Applies Linear Regression forecast to an existing Plotly figure.
     """
     if len(df) < 2:
-        return fig
+        return fig #Not enough data points to continue: return figure as is
 
-    X_train = np.arange(len(df)).reshape(-1, 1)
+    # Prepare ML model
+    X_train = np.arange(len(df)).reshape(-1, 1) # Prepare input features as a column of row indices
     y_train = df[y_col].values
 
     model = LinearRegression().fit(X_train, y_train)
@@ -24,6 +25,8 @@ def apply_forecast(fig, df, x_col="month_label", y_col="demand_count", color=Non
     R_squared_score = model.score(X_train, y_train) * 100
     accuracy = "{0:.2f}".format(R_squared_score)
 
+    # Get the last date and generate the next 12 month labels for forecasting
+    # %b are months and %Y is the year
     last_date = pd.to_datetime(df[x_col].iloc[-1], format="%b %Y")
     future_labels = [
         (last_date + pd.DateOffset(months=i)).strftime("%b %Y")
