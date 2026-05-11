@@ -7,7 +7,7 @@ from backend.db_queries_employer import (
 )
 
 
-# Use Case 5 - Active Employers
+# Use Case  - Active Employers
 def show():
     plotly_config = {"displayModeBar": False}
 
