@@ -1,3 +1,4 @@
+#psycopg2: Python library that talks to PostgreSQL DB
 import psycopg2
 from .config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
 
