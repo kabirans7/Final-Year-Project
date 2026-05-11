@@ -1,7 +1,7 @@
 import streamlit as st
 from sqlalchemy import create_engine
  
- 
+# get_engine runs only once
 @st.cache_resource
 def get_engine():
     pg = st.secrets["postgres"]
@@ -15,6 +15,6 @@ def get_engine():
         pool_recycle=300,          # recycle connections every 5 minutes
         pool_size=5,               # max 5 persistent connections
         max_overflow=10,           # allow 10 extra connections if needed
-        connect_args={"sslmode": "require"},
+        connect_args={"sslmode": "require"}, #forces encrypted SSL Connection (needed for Neon)
     )
   
