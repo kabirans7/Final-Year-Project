@@ -4,7 +4,7 @@ from sqlalchemy import text
 from backend.db import get_engine #Neon connection 
 # ttl=600 is a Streamlit function to ensure that the app remembers the results for 10 mins
 # and does not have to keep refreshing (this improves runtime)
-# WHERE (:finyear IS NULL OR d.finyear = :finyear) are help the filters
+# WHERE (:finyear IS NULL OR d.finyear = :finyear) help the filters
 
 #Establish Neon DB connection
 def _query(sql: str, params: dict) -> pd.DataFrame:
