@@ -2,6 +2,7 @@ import streamlit as st
 import plotly.express as px
 from backend.db_queries_roles import get_experience_by_role
 
+# Colour blind-friendly colours
 CB_COLORS = [
     "#4C8BF5",  # blue
     "#F5A623",  # amber
@@ -25,7 +26,8 @@ def show(job_title: str, finyear: int | None = None):
 
     df = df.sort_values("demand_count", ascending=True)
 
-    colors = [CB_COLORS[i % len(CB_COLORS)] for i in range(len(df))]
+    # Assign colours to each bar, cycling through CB_COLORS
+    colors = [CB_COLORS[i % len(CB_COLORS)] for i in range(len(df))] 
 
     fig = px.bar(
         df,
@@ -39,7 +41,7 @@ def show(job_title: str, finyear: int | None = None):
     )
 
     fig.update_traces(
-        marker=dict(color=colors, line=dict(width=0)),
+        marker=dict(color=colors, line=dict(width=0)), # Style bars: apply colours
         text=df["demand_count"],
         textposition="outside",
     )
