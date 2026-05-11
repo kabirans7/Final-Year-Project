@@ -3,7 +3,7 @@ import plotly.express as px
 import pandas as pd
 from backend.db_queries_roles import get_geography_by_role
 
-# Comprehensive UK city coordinates
+# Hard-coded solutions with UK cities via Latitude and Longitude
 CITY_COORDS = {
     "London":       {"lat": 51.5074, "lon": -0.1278},
     "Manchester":   {"lat": 53.4808, "lon": -2.2426},
@@ -19,7 +19,7 @@ CITY_COORDS = {
     "Cardiff":      {"lat": 51.4816, "lon": -3.1791},
 }
 
-# Nation centre coordinates (used when no city filter applied)
+# Hard Coded Nation centre coordinates
 NATION_COORDS = {
     "England":  {"lat": 52.8,  "lon": -1.2},
     "Scotland": {"lat": 56.8,  "lon": -4.2},
@@ -39,6 +39,7 @@ def show(job_title: str, finyear: int | None = None, nation: str | None = None, 
     if nation and nation != "All":
         df = df[df["country"] == nation]
 
+    # Coordinates and labels for selected city
     if city and city != "All":
         df["lat"] = df["country"].map(lambda x: CITY_COORDS.get(city, {}).get("lat"))
         df["lon"] = df["country"].map(lambda x: CITY_COORDS.get(city, {}).get("lon"))
@@ -70,6 +71,7 @@ def show(job_title: str, finyear: int | None = None, nation: str | None = None, 
 
     df["Demand"] = df["demand_count"].apply(categorise)
 
+    # Hard coded colours
     color_map = {
         "High":    "#1B3A6B",  # dark navy blue
         "Medium":  "#6AAACD",  # medium blue
@@ -77,6 +79,7 @@ def show(job_title: str, finyear: int | None = None, nation: str | None = None, 
         "No Data": "#D5D8DC",  # light grey
     }
 
+    # Map visual
     fig = px.scatter_geo(
         df,
         lat="lat",
