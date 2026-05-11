@@ -161,7 +161,7 @@ st.markdown(f"""
         }}
     </style>
 
-# HTML
+
     <div class="hero">
         <h1>WELCOME TO GRADSCOPE!</h1>
         <h3>A Real-Time Data Dashboard Analysing The Graduate Employment Market</h3>
