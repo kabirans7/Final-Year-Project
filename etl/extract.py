@@ -6,11 +6,11 @@ from .config import CSV_FILE
 # Step 1: Extract Data (E)
 def extract_data() -> pd.DataFrame:
     print("\nStep 1: Extract (E)")
-
+# Dataframe of CSV File
     try:
         df = pd.read_csv(CSV_FILE)
         print(f"E complete: {len(df)} rows extracted from '{CSV_FILE}'.")
-        print(f"  Columns: {df.columns.tolist()}")
+        print(f"  Columns: {df.columns.tolist()}") #Python List
         return df
 
     except FileNotFoundError:
