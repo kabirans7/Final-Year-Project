@@ -243,7 +243,7 @@ def show():
             df,
             x="month_label",
             y="demand_count",
-            markers=True,
+            markers=True, #Circle in each datapoint
             labels={
                 "month_label": "Month",
                 "demand_count": "Number of postings",
@@ -254,7 +254,7 @@ def show():
         fig.update_traces(
             line=dict(color="#56B4E9", width=2),
             marker=dict(
-                color="#56B4E9",
+                color="#56B4E9", #Blue
                 size=10,
                 symbol="circle",
                 line=dict(color="#FFFFFF", width=2),
