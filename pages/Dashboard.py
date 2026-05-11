@@ -94,8 +94,7 @@ for key, default in [
         st.session_state[key] = default
 
 # ---------------------------------------------------------------
-# Centralised cursor control
-# ---------------------------------------------------------------
+#This deals with the cursor, if it reaches the final level, not pointy
 on_final_level = (
     st.session_state.get("skill_page") == "trend" or
     st.session_state.get("roles_page") == "trend" or
