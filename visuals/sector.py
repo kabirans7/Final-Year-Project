@@ -9,7 +9,7 @@ from backend.db_queries_jobdemand import (
 )
 
 
-# Use Case 8 — Sectors with High Graduate Hiring Demand
+# Use Case — Sectors with High Graduate Hiring Demand
 def show():
     plotly_config = {"displayModeBar": False}
 
