@@ -1,4 +1,5 @@
 import streamlit as st
+import math
 import plotly.graph_objects as go
 from backend.db_queries_roles import get_salary_by_role
 
@@ -19,6 +20,7 @@ def show(job_title: str, finyear: int | None = None):
     high   = df["salary_max"].max()
     mean   = df["salary_mid"].mean()
 
+    # format salary into readable string (£45k for example)
     def fmt(val):
         return f"£{val/1000:.0f}k"
 
@@ -55,8 +57,7 @@ def show(job_title: str, finyear: int | None = None):
     x_max = high
     x_pad = (x_max - x_min) * 0.15
 
-    tick_step = 5000
-    import math
+    tick_step = 5000 #Covers every £5k
     tick_start = math.floor(x_min / tick_step) * tick_step
     tick_end   = math.ceil(x_max / tick_step) * tick_step
     tick_vals  = list(range(int(tick_start), int(tick_end) + tick_step, tick_step))
@@ -72,7 +73,7 @@ def show(job_title: str, finyear: int | None = None):
         xaxis=dict(
             range=[x_min - x_pad, x_max + x_pad],
             tickvals=tick_vals,
-            ticktext=[f"£{v // 1000}k" for v in tick_vals],
+            ticktext=[f"£{v // 1000}k" for v in tick_vals], #Converts to £20k for example
         ),
     )
 
