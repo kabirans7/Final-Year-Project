@@ -1,7 +1,10 @@
 import streamlit as st
 
+# Bar logo in the Google tab and how the page is set
 st.set_page_config(page_title="GradScope", page_icon=":bar_chart:", layout="wide", initial_sidebar_state="expanded")
 
+# Dashboard CSS
+# These are old codes that were developed during IPD
 def local_css(file_name: str):
     try:
         with open(file_name, "r", encoding="utf-8") as f:
@@ -11,12 +14,13 @@ def local_css(file_name: str):
 
 
 # URL Routing for reset password
+# Planned authentication setup
 params = st.query_params
 if params.get("page") == "reset":
     st.session_state["auth_view"] = "reset"
     st.session_state["reset_token"] = params.get("token", "")
 
-# Global CSS
+# Dashboard CSS
 st.markdown("<style>img{border-radius:15px;}</style>", unsafe_allow_html=True)
 local_css("style/style.css")
 
@@ -34,10 +38,15 @@ st.markdown("""
 
 # ---------------------------------------------------------------
 # Logo + Title + Nav
-# ---------------------------------------------------------------
+# Converts binary image data into plain text (base64) so it can be embedded directly in HTML
 logo_b64 = __import__('base64').b64encode(open('images/GradScope_Image.png', 'rb').read()).decode()
 
-col1, spacer, nav1, nav2 = st.columns([0.15, 0.3, 0.15, 0.15]) #col2 with 0.25
+# Define logo, Home & Dashboard Nav tabs
+# col1 - Logo
+# Spacer - Empty gap to push buttons to the right 
+# nav 1 - Home button
+# nav 2 - Dashboard button
+col1, spacer, nav1, nav2 = st.columns([0.15, 0.3, 0.15, 0.15]) # Allows spacing
 with col1:
      st.markdown(f"""
         <img src="data:image/png;base64,{logo_b64}" 
@@ -54,7 +63,7 @@ with nav2:
         st.switch_page("pages/Dashboard.py")
 
 
-#Styling
+#Styling (rem is font size)
 st.markdown(f"""
     <style>
         .hero {{
@@ -152,6 +161,7 @@ st.markdown(f"""
         }}
     </style>
 
+# HTML
     <div class="hero">
         <h1>WELCOME TO GRADSCOPE!</h1>
         <h3>A Real-Time Data Dashboard Analysing The Graduate Employment Market</h3>
