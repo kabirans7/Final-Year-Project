@@ -1,4 +1,3 @@
-# transform.py
 import re
 import pandas as pd
 from .skills_dict import SKILLS_DICT
@@ -9,20 +8,19 @@ def transform_data(df: pd.DataFrame) -> dict:
 
     # -------------------------------------------------------------------------
     # T1: Clean column names
-    # -------------------------------------------------------------------------
     df.columns = (
         df.columns
-        .str.strip()
-        .str.lower()
-        .str.replace(" ", "_")
-        .str.replace(r"[^a-z0-9_]", "", regex=True)
+        .str.strip() #Removes spaces
+        .str.lower() #Converts lowercase
+        .str.replace(" ", "_") #Replaces spaces with _
+        .str.replace(r"[^a-z0-9_]", "", regex=True) #Removes character that isn't letter, number or underscore
     )
     print("T1 complete: Column names cleaned.")
     print(f"  Columns: {df.columns.tolist()}")
 
     # -------------------------------------------------------------------------
     # T2: Parse salary range → salary_min (int) & salary_max (int)
-    # -------------------------------------------------------------------------
+    # Make the salary string into separate min and max integer columns
     def _parse_salary(s: str) -> tuple:
         nums = re.findall(r"\d[\d,]*", str(s).replace(",", ""))
         if len(nums) >= 2:
@@ -38,7 +36,6 @@ def transform_data(df: pd.DataFrame) -> dict:
 
     # -------------------------------------------------------------------------
     # T3: Normalise & explode skills using SKILLS_DICT
-    # -------------------------------------------------------------------------
     def _normalise_skills(raw: str) -> list[dict]:
         results = []
         seen = set()
@@ -77,13 +74,12 @@ def transform_data(df: pd.DataFrame) -> dict:
     ]
     print("T3 complete: Skills normalised via SKILLS_DICT.")
     if unmapped:
-        print(f"  ⚠ {len(set(unmapped))} unmapped skill(s) flagged for review: {sorted(set(unmapped))}")
+        print(f"{len(set(unmapped))} unmapped skill(s) flagged for review: {sorted(set(unmapped))}")
     else:
-        print("  ✓ All skills mapped successfully.")
+        print("All skills mapped successfully.")
 
     # -------------------------------------------------------------------------
-    # T4: Build DIM_Skill — deduplicated canonical skill table
-    # -------------------------------------------------------------------------
+    # T4: Build DIM_Skill — Removing duplicates
     all_skills = [s for skills in df["skills_normalised"] for s in skills]
     dim_skill = (
         pd.DataFrame(all_skills)
@@ -99,7 +95,6 @@ def transform_data(df: pd.DataFrame) -> dict:
 
     # -------------------------------------------------------------------------
     # T5: Build date dimension fields (UK financial year: April–March)
-    # -------------------------------------------------------------------------
     df["date_posted"] = pd.to_datetime(df["date_posted"], dayfirst=True)
 
     dim_date = df["date_posted"].drop_duplicates().sort_values().reset_index(drop=True)
@@ -117,7 +112,6 @@ def transform_data(df: pd.DataFrame) -> dict:
 
     # -------------------------------------------------------------------------
     # T6: Assign surrogate keys & build remaining dimension tables
-    # -------------------------------------------------------------------------
     def _make_dim(series: pd.Series, id_col: str, val_col: str) -> pd.DataFrame:
         vals = series.drop_duplicates().reset_index(drop=True)
         return pd.DataFrame({id_col: range(1, len(vals) + 1), val_col: vals})
@@ -158,7 +152,6 @@ def transform_data(df: pd.DataFrame) -> dict:
 
     # -------------------------------------------------------------------------
     # T7: Build fact & bridge tables
-    # -------------------------------------------------------------------------
     company_map = dim_company.set_index("company_name")["company_id"]
     title_map   = dim_job_title.set_index("job_title")["job_title_id"]
     type_map    = dim_job_type.set_index("job_type")["job_type_id"]
