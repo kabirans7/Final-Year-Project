@@ -94,8 +94,7 @@ def show():
 
     # ---------------------------------------------------------------
     # Chart 1 — Role trend
-    # ---------------------------------------------------------------
-    if selected_role != "All":
+    if selected_role != "All": #If user does not pick all
         df_role = get_trend_by_role(selected_role, finyear=finyear)
         fig = build_line_chart(
             df_role,
@@ -153,6 +152,7 @@ def show():
 def show_monthly():
     plotly_config = {"displayModeBar": False}
 
+    # Make years into a string
     fin_years = [2019, 2020, 2021, 2022, 2023]
     year_options = ["All Time"] + [str(y) for y in fin_years]
 
